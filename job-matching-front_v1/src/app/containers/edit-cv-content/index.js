@@ -4,18 +4,22 @@ import {
   Container, Row, Col
 } from 'reactstrap';
 import {
-  List, ListItem, Chip, FloatingActionButton 
+  List, ListItem, Chip, FloatingActionButton
 } from 'material-ui';
 
-import ContentAdd from 'material-ui/svg-icons/content/add';
+
 
 import ParentNote from '../../components/ParentNote';
+import AddNewParentNote from '../add-new-parent-note';
 
 class EditCVContent extends React.Component {
 
   constructor(props) {
     super(props);
     this.state = {
+
+      isShowAddDialog: false,
+
       arrParentNote: [
         <ListItem disabled >
           <ParentNote />
@@ -33,6 +37,12 @@ class EditCVContent extends React.Component {
     }
   }
 
+  handleShowHideAddDialog = () => {
+    this.setState({
+      isShowAddDialog: !this.state.isShowAddDialog
+    });
+  }
+
   render = () => {
     let test = [{ aaa: <Chip>sfsdfsd</Chip> }]
     let arr = [<Chip>sfsdfsd</Chip>, <Chip>sfsdfsd</Chip>, <Chip>sfsdfsd</Chip>]
@@ -48,12 +58,15 @@ class EditCVContent extends React.Component {
                     return tempNote
                   }
                 )}
-
               </List>
             </Col>
             <Col md="2" />
           </Row>
         </Container>
+        <AddNewParentNote
+          isShowAddDialog={this.props.isShowAddDialog}
+          handleShowHideAddDialog={this.props.handleShowHideAddDialog}
+        />
       </div>
     );
   }

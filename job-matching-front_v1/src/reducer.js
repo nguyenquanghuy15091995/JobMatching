@@ -1,8 +1,10 @@
 import React from 'react';
 import {combineReducers} from 'redux';
 
-const reducers = combineReducers({
+import {loadUserData} from './app/reducer';
 
+const reducers = combineReducers({
+  user: loadUserData
 });
 
 export default reducers;

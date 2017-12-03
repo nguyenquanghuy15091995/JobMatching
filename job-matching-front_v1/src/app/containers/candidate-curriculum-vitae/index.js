@@ -1,11 +1,12 @@
 import React from 'react';
-import { Tabs, Tab, AppBar } from 'material-ui';
+import { Tabs, Tab, AppBar, FloatingActionButton } from 'material-ui';
 
+import ContentAdd from 'material-ui/svg-icons/content/add';
 import SwipeableViews from 'react-swipeable-views';
 
 import ShowCVContent from '../show-cv-content';
 import EditCVContent from '../edit-cv-content';
-
+import AddNewParentNote from '../add-new-parent-note';
 
 const styles = {
   fixElement: {
@@ -28,6 +29,13 @@ const styles = {
   slide: {
     padding: 10,
   },
+  addButton: {
+    right: 0,
+    bottom: 0,
+    position: 'fixed',
+    marginRight: 20,
+    marginBottom: 20,
+  }
 };
 
 class CurriculumVitae extends React.Component {
@@ -36,8 +44,14 @@ class CurriculumVitae extends React.Component {
     super(props);
     this.state = {
       slideIndex: 0,
-      
+      isShowAddDialog: false,
     };
+  }
+
+  handleShowHideAddDialog = () => {
+    this.setState({
+      isShowAddDialog: !this.state.isShowAddDialog
+    });
   }
 
   handleChange = (value) => {
@@ -48,32 +62,46 @@ class CurriculumVitae extends React.Component {
 
   render = () => {
     return (
-      <div style={{backgroundColor:"#00838F"}}>
+      <div style={{ backgroundColor: "#00838F" }}>
         <div style={styles.fixElement}>
           <AppBar />
           <Tabs
             onChange={this.handleChange}
             value={this.state.slideIndex}
           >
-            <Tab label="View" value={0} style={styles.tabFont} />
-            <Tab label="Edit" value={1} style={styles.tabFont} />
+            <Tab label="Edit" value={0} style={styles.tabFont} />
+            <Tab label="View" value={1} style={styles.tabFont} />
+
           </Tabs>
         </div>
         <div style={styles.fixContent}>
-        <SwipeableViews
-          index={this.state.slideIndex}
-          onChangeIndex={this.handleChange}
-        >
-          
-          <div style={styles.slide}>
-            {/*Show*/}
-            <ShowCVContent />
-          </div>
-          <div style={styles.slide}>
-            {/*Edit*/}
-            <EditCVContent/>
-          </div>
-        </SwipeableViews>
+          <SwipeableViews
+            index={this.state.slideIndex}
+            onChangeIndex={this.handleChange}
+          >
+
+            <div style={styles.slide}>
+              {/*Edit*/}
+              <EditCVContent
+                isShowAddDialog={this.state.isShowAddDialog}
+                handleShowHideAddDialog={this.handleShowHideAddDialog}
+              />
+
+            </div>
+            <div style={styles.slide}>
+              {/*Show*/}
+              <ShowCVContent />
+
+
+            </div>
+          </SwipeableViews>
+          <FloatingActionButton
+            secondary={true}
+            style={styles.addButton}
+            onClick={this.handleShowHideAddDialog}
+          >
+            <ContentAdd />
+          </FloatingActionButton>
         </div>
       </div>
     );
