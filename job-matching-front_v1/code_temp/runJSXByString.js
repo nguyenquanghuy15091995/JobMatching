@@ -1,0 +1,1 @@
+<div className="content" dangerouslySetInnerHTML={{__html: "<h1>Ahihi</h1>"}}></div>
