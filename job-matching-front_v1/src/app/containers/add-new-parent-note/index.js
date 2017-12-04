@@ -20,12 +20,11 @@ class AddNewParentNote extends React.Component {
     return (
       <div>
         <Dialog
-          title="Dialog With Actions"
           actions={actions}
           modal={true}
           open={this.props.isShowAddDialog}
         >
-          Only actions can close this dialog.
+          
         </Dialog>
       </div>
     );

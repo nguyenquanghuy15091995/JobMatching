@@ -1,6 +1,9 @@
-'use strict';
 import React from 'react';
+import PropTypes from 'prop-types';
 import { Card, CardActions, CardHeader, CardTitle, CardText, FloatingActionButton, TextField } from 'material-ui';
+
+import NonTimeChildNote from '../NonTimeChildNote';
+import TimeChildNote from '../TimeChildNote';
 
 const styles = {
   headTitle: {
@@ -16,23 +19,39 @@ class ParentNote extends React.Component {
   }
 
   render = () => {
+    
     return (
       <div>
         <Card>
 
-          <CardTitle 
-            title={
-              <TextField
-                hintText="Title"
-                inputStyle={styles.headTitle}
-                hintStyle={styles.headTitle}
-              />
-            }
+          <CardTitle
+            title={this.props.parentNote.title}
+            titleStyle={styles.headTitle}
           />
+
           <CardText>
-            
+            {
+              this.props.parentNote.childNotes.map(
+                (childNote, i) => {
+                  if (this.props.parentNote.parentType.parentTypeValue === 'time') {
+                    return (
+                      <div key={i}>
+                        <TimeChildNote ordinal={i} childNote={childNote} />
+                      </div>
+                    )
+                  }
+                  else {
+                    return (
+                      <div key={i}>
+                        <NonTimeChildNote ordinal={i} childNote={childNote} />
+                      </div>
+                    )
+                  }
+                }
+              )
+            }
           </CardText>
-         
+
           <CardActions>
 
           </CardActions>
@@ -40,6 +59,11 @@ class ParentNote extends React.Component {
       </div>
     );
   }
+}
+
+ParentNote.propTypes = {
+  parentNote: PropTypes.object,
+  ordinal: PropTypes.number
 }
 
 export default ParentNote;

@@ -1,4 +1,3 @@
-'use strict';
 import React from 'react';
 import { Field, reduxForm } from 'redux-form'
 import { TextField, RaisedButton, Paper, List, ListItem, AppBar } from 'material-ui';

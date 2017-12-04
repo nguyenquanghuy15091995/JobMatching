@@ -1,16 +1,21 @@
-'use strict';
 import React from 'react';
+import PropTypes from 'prop-types';
 import {
   Container, Row, Col
 } from 'reactstrap';
 import {
   List, ListItem, Chip, FloatingActionButton
 } from 'material-ui';
-
-
+import { connect } from 'react-redux';
 
 import ParentNote from '../../components/ParentNote';
 import AddNewParentNote from '../add-new-parent-note';
+
+const mapStateToProp = (state) => {
+  return {
+    userInfo: state.user,
+  };
+}
 
 class EditCVContent extends React.Component {
 
@@ -44,8 +49,7 @@ class EditCVContent extends React.Component {
   }
 
   render = () => {
-    let test = [{ aaa: <Chip>sfsdfsd</Chip> }]
-    let arr = [<Chip>sfsdfsd</Chip>, <Chip>sfsdfsd</Chip>, <Chip>sfsdfsd</Chip>]
+    console.log(this.props.userInfo)
     return (
       <div>
         <Container>
@@ -53,11 +57,19 @@ class EditCVContent extends React.Component {
             <Col md="2" />
             <Col md="8" sm="12" xs="12">
               <List>
-                {this.state.arrParentNote.map(
-                  (tempNote, i) => {
-                    return tempNote
-                  }
-                )}
+                {
+                  this.props.userInfo.person.parentNotes.map(
+                    (parentNote, i) => {
+                      return (
+                        <div key={i}>
+                          <ListItem disabled >
+                            <ParentNote ordinal={i} parentNote={parentNote} />
+                          </ListItem>
+                        </div>
+                      )
+                    }
+                  )
+                }
               </List>
             </Col>
             <Col md="2" />
@@ -72,4 +84,8 @@ class EditCVContent extends React.Component {
   }
 }
 
-export default EditCVContent;
+EditCVContent.propTypes = {
+  userInfo: PropTypes.object,
+}
+
+export default connect(mapStateToProp)(EditCVContent);

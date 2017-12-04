@@ -1,4 +1,3 @@
-'use strict';
 import React from 'react';
 import { MuiThemeProvider } from 'material-ui';
 import LoginForm from './containers/login-form';

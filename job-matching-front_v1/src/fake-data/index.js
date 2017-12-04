@@ -23,22 +23,22 @@ export const initFakeData = {
         title: 'objective',
         parentType: {
           parentTypeid: 1,
-          parentTypeValue: 'objective'
+          parentTypeValue: 'non-time'
         },
         childNotes: [
           {
             childId: 1,
-            title: 'Sleeping',
-            startDate: 'borned',
-            endDate: 'present',
-            value: '- I hate my job and I want to find new job.<br/>Ahuhu',
+            title: 'Current',
+            startDate: 'none',
+            endDate: 'none',
+            value: '- I hate my job and I want to find new job.\nAhuhu',
           },
           {
             childId: 2,
-            title: 'none',
+            title: 'Future',
             startDate: 'none',
             endDate: 'none',
-            value: '- Yolo yolo yolo.<br/>Ahuhu',
+            value: '- Yolo yolo yolo.\nAhuhu',
           }
         ],
       },
@@ -47,7 +47,7 @@ export const initFakeData = {
         title: 'experience',
         parentType: {
           parentTypeid: 1,
-          parentTypeValue: 'experience'
+          parentTypeValue: 'time'
         },
         childNotes: [
           {
@@ -55,14 +55,14 @@ export const initFakeData = {
             title: 'Sleeping',
             startDate: 'borned',
             endDate: 'present',
-            value: '- Sleep 8 hour per day <br/>- Can take a snap 3 hour.',
+            value: '- Sleep 8 hour per day \n- Can take a snap 3 hour.',
           },
           {
             childId: 4,
             title: 'Eating',
             startDate: 'borned',
             endDate: 'present',
-            value: '- Can eat a lot.<br/>- Sleep after eat.',
+            value: '- Can eat a lot.\n- Sleep after eat.',
           }
         ],
       }
