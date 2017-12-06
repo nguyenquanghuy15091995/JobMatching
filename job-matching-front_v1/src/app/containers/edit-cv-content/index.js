@@ -49,13 +49,12 @@ class EditCVContent extends React.Component {
   }
 
   render = () => {
-    console.log(this.props.userInfo)
     return (
       <div>
         <Container>
           <Row>
-            <Col md="2" />
-            <Col md="8" sm="12" xs="12">
+            <Col md="1" />
+            <Col md="10" sm="12" xs="12">
               <List>
                 {
                   this.props.userInfo.person.parentNotes.map(
@@ -72,7 +71,7 @@ class EditCVContent extends React.Component {
                 }
               </List>
             </Col>
-            <Col md="2" />
+            <Col md="1" />
           </Row>
         </Container>
         <AddNewParentNote

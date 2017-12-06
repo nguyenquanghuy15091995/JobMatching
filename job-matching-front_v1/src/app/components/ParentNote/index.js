@@ -25,7 +25,7 @@ class ParentNote extends React.Component {
         <Card>
 
           <CardTitle
-            title={this.props.parentNote.title}
+            title={this.props.parentNote.title.toUpperCase()}
             titleStyle={styles.headTitle}
           />
 
@@ -33,7 +33,7 @@ class ParentNote extends React.Component {
             {
               this.props.parentNote.childNotes.map(
                 (childNote, i) => {
-                  if (this.props.parentNote.parentType.parentTypeValue === 'time') {
+                  if (this.props.parentNote.parentType === 'time') {
                     return (
                       <div key={i}>
                         <TimeChildNote ordinal={i} childNote={childNote} />

@@ -5,7 +5,7 @@ import CurriculumVitae from './containers/candidate-curriculum-vitae';
 
 const App = () => {
   return (
-    <div style={{margin:0, display:"relative"}}>
+    <div>
       <MuiThemeProvider>
         <div >
           

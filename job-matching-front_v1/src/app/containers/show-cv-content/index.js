@@ -6,10 +6,11 @@ import {
   Card, CardActions, CardHeader, CardMedia, CardTitle, CardText,
   Paper, FlatButton, FontIcon, Avatar, Divider
 } from 'material-ui';
+import { connect } from 'react-redux';
+
+import ParentNote from '../../components/ParentNote';
 
 import TDTLogo from './tdt_logo.png';
-
-import 'bootstrap/dist/css/bootstrap.css';
 
 const styles = {
   posHeader: {
@@ -22,96 +23,64 @@ const styles = {
   subHeader: {
     fontSize: 20,
     paddingLeft: 10
+  },
+  deviderHead: {
+    paddingTop: 5,
+    borderColor: '#000000',
+    backgroundColor: '#37474F',
+  },
+  deviderBody: {
+    height: 5,
+    backgroundColor: '#37474F',
   }
 }
 
+const mapStateToProps = (state) => {
+  return { userInfo: state.user };
+}
+
 class ShowCVContent extends React.Component {
+
   render = () => {
+    let personInfo = this.props.userInfo.person;
     return (
       <div>
         <Container>
           <Row>
-            <Col md="2" />
-            <Col md="8" sm="12" xs="12">
+            <Col md="1" />
+            <Col md="10" sm="12" xs="12">
               <Paper>
                 <Card>
                   <CardHeader
                     style={styles.posHeader}
-                    title="Nguyen Van A"
+                    title={personInfo.name}
                     titleStyle={styles.header}
-                    subtitle="22 - 10 - 1996"
+                    subtitle={personInfo.dateOfBirth}
                     subtitleStyle={styles.subHeader}
-                    avatar={<Avatar icon={<FontIcon/>} size={100} />}
+                    avatar={<Avatar icon={<FontIcon />} size={100} />}
                   />
-                  <Divider style={{paddingTop:5}}/>
-                  <CardTitle title="Card title" subtitle="Card subtitle" />
-                  <CardText>
-                  
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odi
-
-                  </CardText>
-                  <CardText>
-                  
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odi
-
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odi
-
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odi
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odi
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odio.
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Donec mattis pretium massa. Aliquam erat volutpat. Nulla facilisi.
-                    Donec vulputate interdum sollicitudin. Nunc lacinia auctor quam sed pellentesque.
-                    Aliquam dui mauris, mattis quis lacus id, pellentesque lobortis odi
-
-                  </CardText>
-                  
-                  <CardActions>
-                    <FlatButton label="Action1" />
-                    <FlatButton label="Action2" />
-                  </CardActions>
+                  <Divider style={styles.deviderHead} />
+                  <Divider style={styles.deviderHead} />
+                  <Divider style={styles.deviderHead} />
+                  {
+                    personInfo.parentNotes.map(
+                      (parentNote, i) => {
+                        return (
+                          <div key={i}>
+                            <CardText>
+                              <ParentNote parentNote={parentNote} ordinal={i} />
+                            </CardText>
+                          </div>
+                        );
+                      }
+                    )
+                  }
+                  <Divider style={styles.deviderHead} />
                 </Card>
+
               </Paper>
             </Col>
-            <Col md="2" />
+            <Col md="1" />
           </Row>
         </Container>
       </div>
@@ -119,4 +88,4 @@ class ShowCVContent extends React.Component {
   }
 }
 
-export default ShowCVContent;
+export default connect(mapStateToProps)(ShowCVContent);

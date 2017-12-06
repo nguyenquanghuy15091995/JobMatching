@@ -1,9 +1,10 @@
 import React from 'react';
-import { Tabs, Tab, AppBar, FloatingActionButton } from 'material-ui';
+import { Tabs, Tab, FloatingActionButton } from 'material-ui';
 
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import SwipeableViews from 'react-swipeable-views';
 
+import Header from '../../components/Header';
 import ShowCVContent from '../show-cv-content';
 import EditCVContent from '../edit-cv-content';
 import AddNewParentNote from '../add-new-parent-note';
@@ -62,9 +63,9 @@ class CurriculumVitae extends React.Component {
 
   render = () => {
     return (
-      <div style={{ backgroundColor: "#00838F" }}>
+      <div>
         <div style={styles.fixElement}>
-          <AppBar />
+          <Header title="Curriculum Vitae" isNullElement={false} />
           <Tabs
             onChange={this.handleChange}
             value={this.state.slideIndex}
