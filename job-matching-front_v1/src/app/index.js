@@ -1,15 +1,20 @@
 import React from 'react';
 import { MuiThemeProvider } from 'material-ui';
-import LoginForm from './containers/login-form';
-import CurriculumVitae from './containers/candidate-curriculum-vitae';
+import LoginForm from './containers/LoginForm';
+import CandidateLayout from './containers/CandidateLayout';
+
+const styles = {
+  backColor: {
+    backgroundColor: '#EEEEEE',
+  }
+}
 
 const App = () => {
   return (
     <div>
       <MuiThemeProvider>
-        <div >
-          
-          <CurriculumVitae />
+        <div style={styles.backColor}>
+          <CandidateLayout />
         </div>
       </MuiThemeProvider>
     </div>

@@ -9,7 +9,7 @@ import {
 import { connect } from 'react-redux';
 
 import ParentNote from '../../components/ParentNote';
-import AddNewParentNote from '../add-new-parent-note';
+import AddNewParentNote from '../AddNewParentNote';
 
 const mapStateToProp = (state) => {
   return {

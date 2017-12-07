@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { AppBar, IconButton } from 'material-ui';
 
-import Dehaze from 'material-ui/svg-icons/image/dehaze';
+import Home from 'material-ui/svg-icons/action/home';
 
 const styles = {
   headerStyle: {
@@ -10,9 +10,7 @@ const styles = {
   },
   titleStyle: {
     fontWeight: 'bold',
-    marginLeft: '1%',
   },
-
 }
 
 class Header extends React.Component {
@@ -38,7 +36,13 @@ class Header extends React.Component {
       header = <AppBar
         title={this.props.title}
         titleStyle={styles.titleStyle}
-        iconElementLeft={<IconButton><Dehaze /></IconButton>}
+        iconElementLeft={
+          <IconButton
+            onClick={this.props.handleLeftButton}
+          >
+            <Home />
+          </IconButton>
+        }
         style={styles.headerStyle}
         iconStyleLeft={styles.leftButtonStyle}
       />

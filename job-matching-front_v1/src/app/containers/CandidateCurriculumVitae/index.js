@@ -4,10 +4,9 @@ import { Tabs, Tab, FloatingActionButton } from 'material-ui';
 import ContentAdd from 'material-ui/svg-icons/content/add';
 import SwipeableViews from 'react-swipeable-views';
 
-import Header from '../../components/Header';
-import ShowCVContent from '../show-cv-content';
-import EditCVContent from '../edit-cv-content';
-import AddNewParentNote from '../add-new-parent-note';
+import ShowCVContent from '../ShowCVContent';
+import EditCVContent from '../EditCVContent';
+import AddNewParentNote from '../AddNewParentNote';
 
 const styles = {
   fixElement: {
@@ -65,7 +64,6 @@ class CurriculumVitae extends React.Component {
     return (
       <div>
         <div style={styles.fixElement}>
-          <Header title="Curriculum Vitae" isNullElement={false} />
           <Tabs
             onChange={this.handleChange}
             value={this.state.slideIndex}
