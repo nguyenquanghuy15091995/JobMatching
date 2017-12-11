@@ -27,33 +27,38 @@ const styles = {
 }
 
 class NonTimeChildNote extends React.Component {
-  render = () => {
+  render() {
     return (
       <div>
         <Table selectable={false}  >
           <TableBody displayRowCheckbox={false}>
-            <TableRow>
-              <TableRowColumn style={styles.rowColumnTitle} >
-                <CaptionText value={this.props.childNote.title} />   
-              </TableRowColumn>
-              <TableRowColumn style={styles.rowColumnContent} >
-                {this.props.childNote.value.split("\n").map(
-                  (text, i) => {
-                    return <div key={i}><ContentText value={text} /></div>;
-                  }
-                )}
-              </TableRowColumn>
-            </TableRow>
+            {this.props.childNotes.map(
+              (childNote, i) =>
+                (
+                  <TableRow key={i}>
+                    <TableRowColumn style={styles.rowColumnTitle} >
+                      <CaptionText value={childNote.title} />
+                    </TableRowColumn>
+                    <TableRowColumn style={styles.rowColumnContent} >
+                      <br />
+                      {childNote.value.split("\n").map(
+                        (text, j) => {
+                          return <div key={j}><ContentText value={text} /></div>;
+                        }
+                      )}
+                    </TableRowColumn>
+                  </TableRow>
+                ))
+            }
           </TableBody>
         </Table>
-        <Divider style={styles.devider} />
       </div>
     );
   }
 }
 
 NonTimeChildNote.propTypes = {
-  childNote: PropTypes.object
+  childNotes: PropTypes.array
 }
 
 export default NonTimeChildNote;

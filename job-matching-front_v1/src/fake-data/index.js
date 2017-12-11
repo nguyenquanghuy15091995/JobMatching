@@ -48,6 +48,42 @@ export const initFakeData = {
             value: '- Can eat a lot.\n- Sleep after eat.',
           }
         ],
+      },
+      {
+        title: 'experience',
+        parentType: 'time',
+        childNotes: [
+          {
+            title: 'Sleeping',
+            startDate: 'borned',
+            endDate: 'present',
+            value: '- Sleep 8 hour per day \n- Can take a snap 3 hour.',
+          },
+          {
+            title: 'Eating',
+            startDate: 'borned',
+            endDate: 'present',
+            value: '- Can eat a lot.\n- Sleep after eat.',
+          }
+        ],
+      },
+      {
+        title: 'experience',
+        parentType: 'time',
+        childNotes: [
+          {
+            title: 'Sleeping',
+            startDate: 'borned',
+            endDate: 'present',
+            value: '- Sleep 8 hour per day \n- Can take a snap 3 hour.',
+          },
+          {
+            title: 'Eating',
+            startDate: 'borned',
+            endDate: 'present',
+            value: '- Can eat a lot.\n- Sleep after eat.',
+          }
+        ],
       }
     ],
   }

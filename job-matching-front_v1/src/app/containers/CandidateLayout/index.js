@@ -1,8 +1,25 @@
 import React from 'react';
 import { Drawer, MenuItem } from 'material-ui';
+import { Container, Row, Col } from 'reactstrap';
 
 import CurriculumVitae from '../CandidateCurriculumVitae';
 import Header from '../../components/Header';
+import ToolbarCandidate from '../../components/ToolbarCandidate';
+
+const styles = {
+  headerSpace: {
+    height: 150,
+  },
+  headerStyle: {
+    position: 'fixed',
+    width: '100%',
+    zIndex: 1,
+    boxShadow: '0px 5px 7px #888888',
+  },
+  titleStyle: {
+    fontWeight: 'bold',
+  },
+};
 
 class CandidateLayout extends React.Component {
 
@@ -19,17 +36,21 @@ class CandidateLayout extends React.Component {
 
   handleRequestChange = (isOpenDrawer) => this.setState({ isOpenDrawer });
 
-  render = () => {
+  render() {
     return (
       <div>
-        <Header title=" TDT Job Matching System" isNullElement={false} handleLeftButton={this.handleToggleDrawer} />
+        <div style={styles.headerStyle} >
+          <Header title="Job Matching System" isNullElement={true} handleLeftButton={this.handleToggleDrawer} />
+          <ToolbarCandidate />
+        </div>
+        <div style={styles.headerSpace} />
         <Drawer
           docked={false}
           width={250}
           open={this.state.isOpenDrawer}
           onRequestChange={this.handleRequestChange}
-        > 
-          {/* Set Link here */}
+        >
+
           <MenuItem>Candidate Details</MenuItem>
           <MenuItem>Show Details as CV</MenuItem>
           <MenuItem>Setting</MenuItem>
@@ -37,9 +58,10 @@ class CandidateLayout extends React.Component {
         </Drawer>
 
         {/* Set Route here */}
-
         <CurriculumVitae />
-      </div>
+
+
+      </div >
     );
   }
 }

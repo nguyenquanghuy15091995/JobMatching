@@ -3,17 +3,11 @@ import { MuiThemeProvider } from 'material-ui';
 import LoginForm from './containers/LoginForm';
 import CandidateLayout from './containers/CandidateLayout';
 
-const styles = {
-  backColor: {
-    backgroundColor: '#EEEEEE',
-  }
-}
-
 const App = () => {
   return (
     <div>
       <MuiThemeProvider>
-        <div style={styles.backColor}>
+        <div>
           <CandidateLayout />
         </div>
       </MuiThemeProvider>

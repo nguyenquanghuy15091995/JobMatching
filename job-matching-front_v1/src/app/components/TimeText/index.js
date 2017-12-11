@@ -19,7 +19,7 @@ class TimeText extends React.Component {
     super(props);
   }
 
-  render = () => {
+  render() {
     return (
       <div>
         <h6 style={timeStyle} >

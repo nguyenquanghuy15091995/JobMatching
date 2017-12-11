@@ -11,7 +11,7 @@ class CaptionText extends React.Component {
     super(props);
   }
 
-  render = () => {
+  render() {
     return (
       <div>
         <h6 style={captionStyle}>{this.props.value}</h6>

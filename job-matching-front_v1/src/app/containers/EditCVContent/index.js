@@ -22,24 +22,8 @@ class EditCVContent extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-
       isShowAddDialog: false,
-
-      arrParentNote: [
-        <ListItem disabled >
-          <ParentNote />
-        </ListItem>,
-        <ListItem disabled >
-          <ParentNote />
-        </ListItem>,
-        <ListItem disabled >
-          <ParentNote />
-        </ListItem>,
-        <ListItem disabled >
-          <ParentNote />
-        </ListItem>,
-      ],
-    }
+    };
   }
 
   handleShowHideAddDialog = () => {
@@ -48,7 +32,7 @@ class EditCVContent extends React.Component {
     });
   }
 
-  render = () => {
+  render() {
     return (
       <div>
         <Container>
@@ -65,7 +49,7 @@ class EditCVContent extends React.Component {
                             <ParentNote ordinal={i} parentNote={parentNote} />
                           </ListItem>
                         </div>
-                      )
+                      );
                     }
                   )
                 }
@@ -74,10 +58,10 @@ class EditCVContent extends React.Component {
             <Col md="1" />
           </Row>
         </Container>
-        <AddNewParentNote
+        {/* <AddNewParentNote
           isShowAddDialog={this.props.isShowAddDialog}
           handleShowHideAddDialog={this.props.handleShowHideAddDialog}
-        />
+        /> */}
       </div>
     );
   }

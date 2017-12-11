@@ -8,7 +8,7 @@ class AddNewParentNote extends React.Component {
     super(props);
   }
 
-  render = () => {
+  render() {
 
     const actions = [
       <RaisedButton

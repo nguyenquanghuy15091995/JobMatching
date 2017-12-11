@@ -11,7 +11,7 @@ class ContentText extends React.Component {
     super(props);
   }
 
-  render = () => {
+  render() {
     return (
       <div>
         <h6 style={contentStyle}>{this.props.value}</h6>

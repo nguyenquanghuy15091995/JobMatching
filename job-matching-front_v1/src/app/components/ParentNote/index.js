@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardActions, CardHeader, CardTitle, CardText, FloatingActionButton, TextField } from 'material-ui';
+import { Card, CardActions, CardHeader, CardTitle, CardText, FloatingActionButton, TextField, Divider } from 'material-ui';
 
 import NonTimeChildNote from '../NonTimeChildNote';
 import TimeChildNote from '../TimeChildNote';
@@ -9,8 +9,13 @@ const styles = {
   headTitle: {
     fontWeight: 'bold',
     fontSize: 25
-  }
-}
+  },
+  devider: {
+    padding: 2,
+    borderColor: '#00796B',
+    backgroundColor: '#00796B',
+  },
+};
 
 class ParentNote extends React.Component {
 
@@ -18,8 +23,21 @@ class ParentNote extends React.Component {
     super(props);
   }
 
-  render = () => {
-    
+  render() {
+
+    let childNoteTemp;
+    if (this.props.parentNote.parentType === 'time') {
+      childNoteTemp = <div>
+        <TimeChildNote childNotes={this.props.parentNote.childNotes} />
+      </div>
+
+    }
+    else {
+      childNoteTemp = <div>
+        <NonTimeChildNote childNotes={this.props.parentNote.childNotes} />
+      </div>
+    }
+
     return (
       <div>
         <Card>
@@ -28,28 +46,10 @@ class ParentNote extends React.Component {
             title={this.props.parentNote.title.toUpperCase()}
             titleStyle={styles.headTitle}
           />
+          <Divider style={styles.devider} />
 
           <CardText>
-            {
-              this.props.parentNote.childNotes.map(
-                (childNote, i) => {
-                  if (this.props.parentNote.parentType === 'time') {
-                    return (
-                      <div key={i}>
-                        <TimeChildNote ordinal={i} childNote={childNote} />
-                      </div>
-                    )
-                  }
-                  else {
-                    return (
-                      <div key={i}>
-                        <NonTimeChildNote ordinal={i} childNote={childNote} />
-                      </div>
-                    )
-                  }
-                }
-              )
-            }
+            {childNoteTemp}
           </CardText>
 
           <CardActions>

@@ -41,7 +41,7 @@ const mapStateToProps = (state) => {
 
 class ShowCVContent extends React.Component {
 
-  render = () => {
+  render() {
     let personInfo = this.props.userInfo.person;
     return (
       <div>

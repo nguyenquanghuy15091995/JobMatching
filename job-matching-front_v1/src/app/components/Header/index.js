@@ -2,11 +2,14 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { AppBar, IconButton } from 'material-ui';
 
-import Home from 'material-ui/svg-icons/action/home';
+import Menu from 'material-ui/svg-icons/navigation/menu';
 
 const styles = {
   headerStyle: {
-    backgroundColor: '#00897B',
+    backgroundColor: '#00796B',
+    // position: 'fixed',
+    // width: '100%',
+    // zIndex: 1,
   },
   titleStyle: {
     fontWeight: 'bold',
@@ -19,7 +22,7 @@ class Header extends React.Component {
     super(props);
   }
 
-  render = () => {
+  render() {
 
     let header;
 
@@ -40,7 +43,7 @@ class Header extends React.Component {
           <IconButton
             onClick={this.props.handleLeftButton}
           >
-            <Home />
+            <Menu />
           </IconButton>
         }
         style={styles.headerStyle}
