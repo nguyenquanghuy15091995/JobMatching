@@ -46,6 +46,7 @@ class ShowCVContent extends React.Component {
     return (
       <div>
         <Container>
+          <Row style={{ height: 25 }} />
           <Row>
             <Col md="1" />
             <Col md="10" sm="12" xs="12">

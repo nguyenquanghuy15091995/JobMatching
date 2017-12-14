@@ -50,7 +50,7 @@ export const initFakeData = {
         ],
       },
       {
-        title: 'experience',
+        title: 'ASASAS',
         parentType: 'time',
         childNotes: [
           {
@@ -68,7 +68,7 @@ export const initFakeData = {
         ],
       },
       {
-        title: 'experience',
+        title: 'DSDFSFF',
         parentType: 'time',
         childNotes: [
           {

@@ -1,10 +1,13 @@
 import React from 'react';
 import { Drawer, MenuItem } from 'material-ui';
 import { Container, Row, Col } from 'reactstrap';
+import SwipeableViews from 'react-swipeable-views';
 
-import CurriculumVitae from '../CandidateCurriculumVitae';
 import Header from '../../components/Header';
 import ToolbarCandidate from '../../components/ToolbarCandidate';
+import ShowCVContent from '../ShowCVContent';
+import EditCVContent from '../EditCVContent';
+import ParentNoteAddForm from '../ParentNoteAddForm';
 
 const styles = {
   headerSpace: {
@@ -27,8 +30,22 @@ class CandidateLayout extends React.Component {
     super(props);
     this.state = {
       isOpenDrawer: false,
-    }
+      slideIndex: 0,
+      isAddFormOpen: false,
+    };
   }
+
+  handleHideShowAddForm = () => this.setState({ isAddFormOpen: !this.state.isAddFormOpen });
+
+  handleDownloadClick = () => {
+    console.log('Ahihi');
+  }
+
+  handleEditDetailsClick = () => this.setState({ slideIndex: 0 });
+
+  handlePreviewPDFClick = () => this.setState({ slideIndex: 1 });
+
+  handleSwipeableChange = (value) => this.setState({ slideIndex: value });
 
   handleToggleDrawer = () => this.setState({ isOpenDrawer: !this.state.isOpenDrawer });
 
@@ -41,7 +58,13 @@ class CandidateLayout extends React.Component {
       <div>
         <div style={styles.headerStyle} >
           <Header title="Job Matching System" isNullElement={true} handleLeftButton={this.handleToggleDrawer} />
-          <ToolbarCandidate />
+          <ToolbarCandidate
+            handleMenuClick={this.handleToggleDrawer}
+            handleEditDetailsClick={this.handleEditDetailsClick}
+            handlePreviewPDFClick={this.handlePreviewPDFClick}
+            handleDownloadClick={this.handleDownloadClick}
+            handleAddNewInfoClick={this.handleHideShowAddForm}
+          />
         </div>
         <div style={styles.headerSpace} />
         <Drawer
@@ -57,9 +80,22 @@ class CandidateLayout extends React.Component {
           <MenuItem>Logout</MenuItem>
         </Drawer>
 
-        {/* Set Route here */}
-        <CurriculumVitae />
+        <SwipeableViews
+          index={this.state.slideIndex}
+          onChangeIndex={this.handleSwipeableChange}
+        >
+          <div>
+            <EditCVContent />
+          </div>
+          <div>
+            <ShowCVContent />
+          </div>
+        </SwipeableViews>
 
+        <ParentNoteAddForm
+          isAddFormOpen={this.state.isAddFormOpen}
+          handleHideShowAddForm={this.handleHideShowAddForm}
+        />
 
       </div >
     );

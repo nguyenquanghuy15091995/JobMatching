@@ -4088,6 +4088,12 @@ map-obj@^1.0.0, map-obj@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/map-obj/-/map-obj-1.0.1.tgz#d933ceb9205d82bdcf4886f6742bdc2b4dea146d"
 
+material-ui-fullscreen-dialog@^0.7.1:
+  version "0.7.1"
+  resolved "https://registry.yarnpkg.com/material-ui-fullscreen-dialog/-/material-ui-fullscreen-dialog-0.7.1.tgz#3a7bb68de87e14667137795cb95a06275e7d86f2"
+  dependencies:
+    prop-types "^15.5.8"
+
 material-ui@^0.19.4:
   version "0.19.4"
   resolved "https://registry.yarnpkg.com/material-ui/-/material-ui-0.19.4.tgz#ca9cdca8aa8bb594dfac5db38ec9ff045a323587"

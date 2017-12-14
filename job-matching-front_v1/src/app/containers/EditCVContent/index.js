@@ -9,7 +9,6 @@ import {
 import { connect } from 'react-redux';
 
 import ParentNote from '../../components/ParentNote';
-import AddNewParentNote from '../AddNewParentNote';
 
 const mapStateToProp = (state) => {
   return {
@@ -58,10 +57,6 @@ class EditCVContent extends React.Component {
             <Col md="1" />
           </Row>
         </Container>
-        {/* <AddNewParentNote
-          isShowAddDialog={this.props.isShowAddDialog}
-          handleShowHideAddDialog={this.props.handleShowHideAddDialog}
-        /> */}
       </div>
     );
   }
