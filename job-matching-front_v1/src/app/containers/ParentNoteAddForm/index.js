@@ -10,6 +10,8 @@ import {
   Checkbox,
 } from 'material-ui';
 
+import ChildNoteAddForm from './ChildNoteAddForm';
+
 import CloseIcon from 'material-ui/svg-icons/navigation/close';
 import RemoveIcon from 'material-ui/svg-icons/content/remove-circle';
 import AcceptIcon from 'material-ui/svg-icons/action/check-circle';
@@ -53,6 +55,9 @@ const styles = {
   textFloatLabel: {
     color: '#00897B',
   },
+  textInputTitle: {
+    fontWeight: 'bold',
+  },
   textFloatLabelFocus: {
     fontSize: 20,
     fontWeight: 'bold',
@@ -60,6 +65,12 @@ const styles = {
   textInputTextCation: {
     fontSize: 20,
     fontWeight: 'bold',
+  },
+  saveButtonLabel: {
+    fontWeight: 'bold',
+  },
+  saveButtonDisableLabel: {
+    color: '#9E9E9E',
   },
 };
 
@@ -69,7 +80,22 @@ class ParentNoteAddForm extends React.Component {
     super(props);
     this.state = {
       isTime: false,
-      childNotes: [],
+      isError: false,
+      parentTitleCation: 'Example Caption',
+      childNotes: [
+        {
+          title: 'Sleeping',
+          startDate: 'borned',
+          endDate: 'present',
+          value: '- Sleep 8 hour per day \n- Can take a snap 3 hour.',
+        },
+        {
+          title: 'Eating',
+          startDate: 'borned',
+          endDate: 'present',
+          value: '- Can eat a lot.\n- Sleep after eat.',
+        }
+      ],
     };
   }
 
@@ -77,11 +103,106 @@ class ParentNoteAddForm extends React.Component {
     this.setState({ isTime: !this.state.isTime });
   }
 
+  handleRemove = (index) => {
+    let temps = [];
+    this.state.childNotes.map(
+      (child, i) => {
+        if (i !== index) {
+          temps.push(child);
+        }
+      }
+    );
+    this.setState({
+      childNotes: temps,
+    });
+  }
+
+  handleInputChangeCaption = (event) => {
+    this.setState({
+      parentTitleCation: event.target.value.trimRight(),
+      isTouched: true,
+    });
+    this.scanErrorNullTextField();
+  }
+
+  handleInputChangeTitle = (event, index) => {
+    let temps = this.state.childNotes;
+    temps[index].title = event.target.value;
+    this.setState({
+      childNotes: temps,
+    });
+    this.scanErrorNullTextField();
+  }
+
+  handleInputChangeContent = (event, index) => {
+    let temps = this.state.childNotes;
+    temps[index].value = event.target.value;
+    this.setState({
+      childNotes: temps,
+    });
+    this.scanErrorNullTextField();
+  }
+
+  handleAddChildButtonClick = () => {
+    let newChild = {
+      title: '',
+      startDate: '',
+      endDate: '',
+      value: '',
+    };
+
+    let temps = this.state.childNotes;
+    temps.push(newChild);
+    this.setState({
+      childNotes: temps,
+    });
+  }
+
+  getErrorCaption = () => {
+    let errorText = '';
+    if (this.state.parentTitleCation === '') {
+      errorText = 'Required!';
+    }
+    return errorText;
+  }
+
+  sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+  scanErrorNullTextField = () => {
+    return this.sleep(300).then(
+      () => {
+        let isNullError = false;
+        if (this.state.parentTitleCation === '') {
+          isNullError = true;
+        }
+        this.state.childNotes.forEach(
+          (child) => {
+            if (child.title === '') {
+              isNullError = true;
+            }
+            if (child.value === '') {
+              isNullError = true;
+            }
+            if (this.state.isTime) {
+              if (child.startDate === '') {
+                isNullError = true;
+              }
+              if (child.endDate === '') {
+                isNullError = true;
+              }
+            }
+          }
+        );
+
+        this.setState({ isError: isNullError });
+      }
+    );
+  }
+
   render() {
 
     const timeLabelStatus = this.state.isTime ? 'Display time: ON' : 'Display time: OFF';
     const timeIconColor = this.state.isTime ? { fill: '#00897B' } : {};
-
     return (
       <div>
         <FullscreenDialog
@@ -90,72 +211,79 @@ class ParentNoteAddForm extends React.Component {
           title="Add New Details Form"
           appBarStyle={{ backgroundColor: '#00897B' }}
           style={{ backgroundColor: '#EEEEEE' }}
-          actionButton={<FlatButton label="Save" />}
-        >
-          <Card>
-            <div style={{ height: 30 }} />
-            <CardTitle
-              title={
-                <TextField
-                  style={styles.parentTitle}
-                  inputStyle={styles.textInputTextCation}
-                  floatingLabelText="CAPTION"
-                  floatingLabelFocusStyle={styles.textFloatLabelFocus}
-                  floatingLabelStyle={styles.textFloatLabel}
-                  underlineFocusStyle={styles.textUnderline}
-                />
+          actionButton={
+            <FlatButton
+              label="Save"
+              labelStyle={
+                this.state.isError ? styles.saveButtonDisableLabel : styles.saveButtonLabel
               }
+              disabled={this.state.isError}
             />
-            <CardText>
-              <Checkbox
-                checkedIcon={<ClockOnIcon />}
-                uncheckedIcon={<ClockOffIcon />}
-                label={timeLabelStatus}
-                style={styles.clockCheckbox}
-                iconStyle={timeIconColor}
-                checked={this.state.isTime}
-                onCheck={this.handleCheckboxTimeStatus}
+          }
+        >
+          <form>
+            <Card>
+              <div style={{ height: 30 }} />
+              <CardTitle
+                title={
+                  <TextField
+                    style={styles.parentTitle}
+                    inputStyle={styles.textInputTextCation}
+                    floatingLabelText="CAPTION"
+                    floatingLabelFocusStyle={styles.textFloatLabelFocus}
+                    floatingLabelStyle={styles.textFloatLabel}
+                    underlineFocusStyle={styles.textUnderline}
+                    value={this.state.parentTitleCation}
+                    onChange={this.handleInputChangeCaption}
+                    errorText={this.getErrorCaption()}
+                  />
+                }
               />
-            </CardText>
-            <CardText>
-              <Table selectable={false}>
-                <TableBody displayRowCheckbox={false}>
-                  <TableRow>
-                    <TableRowColumn style={styles.columnChildTitle}>
-                      <TextField
-                        hintText="Title"
-                        fullWidth={true}
-                        underlineFocusStyle={styles.textUnderline}
-                      />
-                    </TableRowColumn>
-                    <TableRowColumn>
-                      <TextField
-                        hintText="Content"
-                        multiLine
-                        fullWidth={true}
-                        underlineFocusStyle={styles.textUnderline}
-                      />
-                    </TableRowColumn>
-                    <TableRowColumn style={styles.columnChildAction}>
-                      <IconButton>
-                        <RemoveIcon color="#D50000" />
-                      </IconButton>
-                    </TableRowColumn>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </CardText>
-            <CardActions style={styles.cardActionStyle} >
-              <RaisedButton
-                label="Add"
-                labelColor="#FFFFFF"
-                labelStyle={styles.addLabel}
-                style={styles.addStyle}
-                buttonStyle={styles.addButtonStyle}
-                icon={<AddIcon color="#FFFFFF" />}
-              />
-            </CardActions>
-          </Card>
+              <CardText>
+                <Checkbox
+                  checkedIcon={<ClockOnIcon />}
+                  uncheckedIcon={<ClockOffIcon />}
+                  label={timeLabelStatus}
+                  style={styles.clockCheckbox}
+                  iconStyle={timeIconColor}
+                  checked={this.state.isTime}
+                  onCheck={this.handleCheckboxTimeStatus}
+                />
+              </CardText>
+              <CardText>
+                {
+                  this.state.childNotes.map(
+                    (child, i) => {
+                      return (
+                        <div key={i}>
+                          <ChildNoteAddForm
+                            ordinal={i}
+                            childNote={child}
+                            isTimeNote={this.state.isTime}
+                            handleRemove={this.handleRemove}
+                            handleInputChangeContent={this.handleInputChangeContent}
+                            handleInputChangeTitle={this.handleInputChangeTitle}
+                          />
+                        </div>
+                      );
+                    }
+                  )
+                }
+
+              </CardText>
+              <CardActions style={styles.cardActionStyle} >
+                <RaisedButton
+                  label="Add"
+                  labelColor="#FFFFFF"
+                  labelStyle={styles.addLabel}
+                  style={styles.addStyle}
+                  buttonStyle={styles.addButtonStyle}
+                  icon={<AddIcon color="#FFFFFF" />}
+                  onClick={this.handleAddChildButtonClick}
+                />
+              </CardActions>
+            </Card>
+          </form>
         </FullscreenDialog>
       </div>
     );
