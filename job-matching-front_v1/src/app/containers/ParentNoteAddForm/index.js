@@ -1,14 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import FullscreenDialog from 'material-ui-fullscreen-dialog';
+import { connect } from 'react-redux';
 import {
   Dialog,
   TextField,
   Card, CardText, CardTitle, CardActions,
-  RaisedButton, IconButton, FlatButton, FloatingActionButton,
+  RaisedButton, IconButton, FlatButton,
   Table, TableBody, TableRow, TableRowColumn,
   Checkbox,
 } from 'material-ui';
+
+import { addNewParentNoteAction } from '../../action';
 
 import ChildNoteAddForm from './ChildNoteAddForm';
 
@@ -72,7 +75,23 @@ const styles = {
   saveButtonDisableLabel: {
     color: '#9E9E9E',
   },
+  askButtonLabel: {
+    color: '#00897B',
+    fontWeight: 'bold',
+  },
 };
+
+const mapStateToProps = (state) => {
+  return {
+    user: state.user,
+  };
+}
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+    saveContentAdd: (newParentNote) => dispatch(addNewParentNoteAction(newParentNote)),
+  };
+}
 
 class ParentNoteAddForm extends React.Component {
 
@@ -80,27 +99,34 @@ class ParentNoteAddForm extends React.Component {
     super(props);
     this.state = {
       isTime: false,
+      isError: true,
+      parentTitleCation: 'Example Caption',
+      childNotes: [],
+      isOpenAsk: false,
+    };
+  }
+
+  resetState = () => {
+    this.setState({
+      isTime: false,
       isError: false,
       parentTitleCation: 'Example Caption',
-      childNotes: [
-        {
-          title: 'Sleeping',
-          startDate: 'borned',
-          endDate: 'present',
-          value: '- Sleep 8 hour per day \n- Can take a snap 3 hour.',
-        },
-        {
-          title: 'Eating',
-          startDate: 'borned',
-          endDate: 'present',
-          value: '- Can eat a lot.\n- Sleep after eat.',
-        }
-      ],
+      childNotes: [],
+    });
+  }
+
+  handleSaveNewParentNote = () => {
+    let newParentNote = {
+      title: this.state.parentTitleCation,
+      parentType: this.state.isTime ? 'time' : 'non-time',
+      childNotes: this.state.childNotes,
     };
+    this.props.saveContentAdd(newParentNote);
   }
 
   handleCheckboxTimeStatus = () => {
     this.setState({ isTime: !this.state.isTime });
+    this.scanErrorNullTextField();
   }
 
   handleRemove = (index) => {
@@ -115,6 +141,7 @@ class ParentNoteAddForm extends React.Component {
     this.setState({
       childNotes: temps,
     });
+    this.scanErrorNullTextField();
   }
 
   handleInputChangeCaption = (event) => {
@@ -143,6 +170,24 @@ class ParentNoteAddForm extends React.Component {
     this.scanErrorNullTextField();
   }
 
+  handleInputChangeStartDate = (event, index) => {
+    let temps = this.state.childNotes;
+    temps[index].startDate = event.target.value;
+    this.setState({
+      childNotes: temps,
+    });
+    this.scanErrorNullTextField();
+  }
+
+  handleInputChangeEndDate = (event, index) => {
+    let temps = this.state.childNotes;
+    temps[index].endDate = event.target.value;
+    this.setState({
+      childNotes: temps,
+    });
+    this.scanErrorNullTextField();
+  }
+
   handleAddChildButtonClick = () => {
     let newChild = {
       title: '',
@@ -156,6 +201,7 @@ class ParentNoteAddForm extends React.Component {
     this.setState({
       childNotes: temps,
     });
+    this.scanErrorNullTextField();
   }
 
   getErrorCaption = () => {
@@ -193,21 +239,44 @@ class ParentNoteAddForm extends React.Component {
             }
           }
         );
-
         this.setState({ isError: isNullError });
       }
     );
   }
 
-  render() {
+  handleHideShowAskDialog = () => {
+    this.setState({
+      isOpenAsk: !this.state.isOpenAsk,
+    });
+  }
 
+  reHandleHideShowAddForm = () => {
+    this.props.handleHideShowAddForm();
+    this.handleHideShowAskDialog();
+    this.resetState();
+  }
+
+  render() {
     const timeLabelStatus = this.state.isTime ? 'Display time: ON' : 'Display time: OFF';
     const timeIconColor = this.state.isTime ? { fill: '#00897B' } : {};
+    const closeButtonActions = [
+      <FlatButton
+        label="Cancel"
+        onClick={this.handleHideShowAskDialog}
+        labelStyle={styles.askButtonLabel}
+      />,
+      <FlatButton
+        label="Close"
+        onClick={this.reHandleHideShowAddForm}
+        labelStyle={styles.askButtonLabel}
+      />,
+    ];
+
     return (
       <div>
         <FullscreenDialog
-          open={true}
-          onRequestClose={this.props.handleHideShowAddForm}
+          open={this.props.isAddFormOpen}
+          onRequestClose={this.handleHideShowAskDialog}
           title="Add New Details Form"
           appBarStyle={{ backgroundColor: '#00897B' }}
           style={{ backgroundColor: '#EEEEEE' }}
@@ -218,6 +287,7 @@ class ParentNoteAddForm extends React.Component {
                 this.state.isError ? styles.saveButtonDisableLabel : styles.saveButtonLabel
               }
               disabled={this.state.isError}
+              onClick={this.handleSaveNewParentNote}
             />
           }
         >
@@ -263,6 +333,8 @@ class ParentNoteAddForm extends React.Component {
                             handleRemove={this.handleRemove}
                             handleInputChangeContent={this.handleInputChangeContent}
                             handleInputChangeTitle={this.handleInputChangeTitle}
+                            handleInputChangeStartDate={this.handleInputChangeStartDate}
+                            handleInputChangeEndDate={this.handleInputChangeEndDate}
                           />
                         </div>
                       );
@@ -285,6 +357,12 @@ class ParentNoteAddForm extends React.Component {
             </Card>
           </form>
         </FullscreenDialog>
+        <Dialog
+          title="Do you want to close ADD form?"
+          modal={true}
+          open={this.state.isOpenAsk}
+          actions={closeButtonActions}
+        />
       </div>
     );
   }
@@ -295,4 +373,4 @@ ParentNoteAddForm.propTypes = {
   handleHideShowAddForm: PropTypes.func,
 };
 
-export default ParentNoteAddForm;
+export default connect(mapStateToProps, mapDispatchToProps)(ParentNoteAddForm);

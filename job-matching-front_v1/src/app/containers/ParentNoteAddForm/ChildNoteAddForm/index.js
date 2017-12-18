@@ -30,6 +30,12 @@ const styles = {
   columnChildAction: {
     width: 80,
   },
+  timeTextField: {
+    margin: 5,
+  },
+  timeFloatLabelFocus: {
+    color: '#00897B',
+  },
 };
 
 class ChildNoteAddForm extends React.Component {
@@ -49,7 +55,78 @@ class ChildNoteAddForm extends React.Component {
     this.props.handleInputChangeTitle(event, this.props.ordinal);
   }
 
+  reHandleInputChangeStartDate = (event) => {
+    this.props.handleInputChangeStartDate(event, this.props.ordinal);
+  }
+
+  reHandleInputChangeEndDate = (event) => {
+    this.props.handleInputChangeEndDate(event, this.props.ordinal);
+  }
+
+  getErrorTextTitle = () => {
+    let errorText = '';
+    if (this.props.childNote.title === '') {
+      errorText = 'Required!';
+    }
+    return errorText;
+  }
+
+  getErrorTextContent = () => {
+    let errorText = '';
+    if (this.props.childNote.value === '') {
+      errorText = 'Required!';
+    }
+    return errorText;
+  }
+
+  getErrorTextDate = () => {
+    let errorTexts = {
+      startErrorText: '',
+      endErrorText: '',
+    };
+    if (this.props.childNote.startDate === '') {
+      errorTexts.startErrorText = 'Required!';
+      errorTexts.endErrorText = '*';
+    } else if (this.props.childNote.endDate === '') {
+      errorTexts.startErrorText = '*';
+      errorTexts.endErrorText = 'Required!';
+    }
+    if (this.props.childNote.startDate === ''
+      && this.props.childNote.endDate === '') {
+      errorTexts.startErrorText = 'Required!';
+      errorTexts.endErrorText = 'Required!';
+    }
+    return errorTexts;
+  }
+
   render() {
+
+    let timeFields = <div />;
+    if (this.props.isTimeNote) {
+      timeFields = <div>
+        <TextField
+          id={"startTime_" + this.props.ordinal}
+          floatingLabelText="From"
+          floatingLabelFocusStyle={styles.timeFloatLabelFocus}
+          style={styles.timeTextField}
+          underlineFocusStyle={styles.textUnderline}
+          value={this.props.childNote.startDate}
+          onChange={this.reHandleInputChangeStartDate}
+          errorText={this.getErrorTextDate().startErrorText}
+        />
+        <TextField
+          id={"endTime_" + this.props.ordinal}
+          floatingLabelText="To"
+          floatingLabelFocusStyle={styles.timeFloatLabelFocus}
+          style={styles.timeTextField}
+          underlineFocusStyle={styles.textUnderline}
+          value={this.props.childNote.endDate}
+          onChange={this.reHandleInputChangeEndDate}
+          errorText={this.getErrorTextDate().endErrorText}
+        />
+      </div>;
+    }
+
     return (
       <div>
         <Table selectable={false}>
@@ -63,17 +140,23 @@ class ChildNoteAddForm extends React.Component {
                   underlineFocusStyle={styles.textUnderline}
                   value={this.props.childNote.title}
                   onChange={this.reHandleInputChangeTitle}
+                  errorText={this.getErrorTextTitle()}
                 />
               </TableRowColumn>
               <TableRowColumn>
-                <TextField
-                  hintText="Content"
-                  multiLine
-                  fullWidth={true}
-                  underlineFocusStyle={styles.textUnderline}
-                  value={this.props.childNote.value}
-                  onChange={this.reHandleInputChangeContent}
-                />
+                {timeFields}
+                <div>
+                  <TextField
+                    id={"content_" + this.props.ordinal}
+                    hintText="Content"
+                    multiLine
+                    fullWidth={true}
+                    underlineFocusStyle={styles.textUnderline}
+                    value={this.props.childNote.value}
+                    onChange={this.reHandleInputChangeContent}
+                    errorText={this.getErrorTextContent()}
+                  />
+                </div>
               </TableRowColumn>
               <TableRowColumn style={styles.columnChildAction}>
                 <IconButton onClick={this.reHandleRemove}>
@@ -83,6 +166,7 @@ class ChildNoteAddForm extends React.Component {
             </TableRow>
           </TableBody>
         </Table>
+        <div style={{ height: 20 }} />
       </div>
     );
   }

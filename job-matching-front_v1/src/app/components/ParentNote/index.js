@@ -1,9 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Card, CardActions, CardHeader, CardTitle, CardText, FloatingActionButton, TextField, Divider } from 'material-ui';
+import { Card, CardActions, CardHeader, CardTitle, CardText, TextField, Divider, RaisedButton } from 'material-ui';
 
 import NonTimeChildNote from '../NonTimeChildNote';
 import TimeChildNote from '../TimeChildNote';
+
+import EditIcon from 'material-ui/svg-icons/image/edit';
+import DeleteIcon from 'material-ui/svg-icons/action/delete';
 
 const styles = {
   headTitle: {
@@ -14,6 +17,22 @@ const styles = {
     padding: 2,
     borderColor: '#00796B',
     backgroundColor: '#00796B',
+  },
+  cardActionStyle: {
+    width: '100%',
+    textAlign: 'right',
+  },
+  editButtonStyle: {
+    backgroundColor: '#00897B',
+  },
+  editButtonLabel: {
+    fontWeight: 'bold',
+  },
+  deleteButtonStyle: {
+    backgroundColor: '#F44336',
+  },
+  deleteButtonLabel: {
+    fontWeight: 'bold',
   },
 };
 
@@ -52,8 +71,23 @@ class ParentNote extends React.Component {
             {childNoteTemp}
           </CardText>
 
-          <CardActions>
-
+          <CardActions style={styles.cardActionStyle}>
+            <RaisedButton
+              id={"edit_" + this.props.ordinal}
+              label="Edit"
+              labelColor="#FFFFFF"
+              labelStyle={styles.editButtonLabel}
+              icon={<EditIcon color="#FFFFFF" />}
+              buttonStyle={styles.editButtonStyle}
+            />
+            <RaisedButton
+              id={"delete_" + this.props.ordinal}
+              label="Delete"
+              labelColor="#FFFFFF"
+              labelStyle={styles.deleteButtonLabel}
+              icon={<DeleteIcon color="#FFFFFF" />}
+              buttonStyle={styles.deleteButtonStyle}
+            />
           </CardActions>
         </Card>
       </div>

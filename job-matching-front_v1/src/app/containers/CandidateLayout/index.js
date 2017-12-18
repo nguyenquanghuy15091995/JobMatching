@@ -2,11 +2,12 @@ import React from 'react';
 import { Drawer, MenuItem } from 'material-ui';
 import { Container, Row, Col } from 'reactstrap';
 import SwipeableViews from 'react-swipeable-views';
+import { connect } from 'react-redux';
 
 import Header from '../../components/Header';
 import ToolbarCandidate from '../../components/ToolbarCandidate';
 import ShowCVContent from '../ShowCVContent';
-import EditCVContent from '../EditCVContent';
+import CVContentManagement from '../CVContentManagement';
 import ParentNoteAddForm from '../ParentNoteAddForm';
 
 const styles = {
@@ -23,6 +24,12 @@ const styles = {
     fontWeight: 'bold',
   },
 };
+
+const mapStateToProp = (state) => {
+  return {
+    userInfo: state.user,
+  };
+}
 
 class CandidateLayout extends React.Component {
 
@@ -85,7 +92,7 @@ class CandidateLayout extends React.Component {
           onChangeIndex={this.handleSwipeableChange}
         >
           <div>
-            <EditCVContent />
+            <CVContentManagement userInfo={this.props.userInfo} />
           </div>
           <div>
             <ShowCVContent />
@@ -102,4 +109,4 @@ class CandidateLayout extends React.Component {
   }
 }
 
-export default CandidateLayout;
+export default connect(mapStateToProp)(CandidateLayout);

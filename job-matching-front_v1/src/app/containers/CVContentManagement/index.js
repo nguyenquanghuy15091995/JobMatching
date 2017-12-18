@@ -10,25 +10,10 @@ import { connect } from 'react-redux';
 
 import ParentNote from '../../components/ParentNote';
 
-const mapStateToProp = (state) => {
-  return {
-    userInfo: state.user,
-  };
-}
-
-class EditCVContent extends React.Component {
+class CVContentManagement extends React.Component {
 
   constructor(props) {
     super(props);
-    this.state = {
-      isShowAddDialog: false,
-    };
-  }
-
-  handleShowHideAddDialog = () => {
-    this.setState({
-      isShowAddDialog: !this.state.isShowAddDialog
-    });
   }
 
   render() {
@@ -62,8 +47,8 @@ class EditCVContent extends React.Component {
   }
 }
 
-EditCVContent.propTypes = {
+CVContentManagement.propTypes = {
   userInfo: PropTypes.object,
 }
 
-export default connect(mapStateToProp)(EditCVContent);
+export default CVContentManagement;

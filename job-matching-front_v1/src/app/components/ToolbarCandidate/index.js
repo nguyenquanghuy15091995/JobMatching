@@ -116,7 +116,7 @@ class ToolbarCandidate extends React.Component {
               <Menu>
                 <Divider />
                 <MenuItem
-                  primaryText="Edit Details"
+                  primaryText="Manage CV Details"
                   leftIcon={<AssignmentIcon color="#00897B" />}
                   onClick={this.props.handleEditDetailsClick}
                 />
