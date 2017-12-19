@@ -42,6 +42,13 @@ class ParentNote extends React.Component {
     super(props);
   }
 
+  reHandleDeleteParentNote = () => {
+    this.props.handleDeleteParentNote(this.props.ordinal);
+    this.props.handleChangeMessage(this.props.parentNote.title.toUpperCase() + ' was deleted!');
+    this.props.handleHideShowSnackbar();
+    console.log('ahihi')
+  }
+
   render() {
 
     let childNoteTemp;
@@ -87,6 +94,7 @@ class ParentNote extends React.Component {
               labelStyle={styles.deleteButtonLabel}
               icon={<DeleteIcon color="#FFFFFF" />}
               buttonStyle={styles.deleteButtonStyle}
+              onClick={this.reHandleDeleteParentNote}
             />
           </CardActions>
         </Card>

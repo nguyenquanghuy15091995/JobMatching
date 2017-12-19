@@ -11,7 +11,7 @@ import {
   Checkbox,
 } from 'material-ui';
 
-import { addNewParentNoteAction } from '../../action';
+import { addNewParentNoteAction } from '../../../action';
 
 import ChildNoteAddForm from './ChildNoteAddForm';
 
@@ -122,6 +122,11 @@ class ParentNoteAddForm extends React.Component {
       childNotes: this.state.childNotes,
     };
     this.props.saveContentAdd(newParentNote);
+    this.props.handleChangeMessage(this.state.parentTitleCation + ' was added!');
+    this.props.handleHideShowAddForm();
+    this.props.handleHideShowSnackbar();
+    this.resetState();
+
   }
 
   handleCheckboxTimeStatus = () => {
@@ -219,6 +224,9 @@ class ParentNoteAddForm extends React.Component {
       () => {
         let isNullError = false;
         if (this.state.parentTitleCation === '') {
+          isNullError = true;
+        }
+        if (this.state.childNotes.length === 0) {
           isNullError = true;
         }
         this.state.childNotes.forEach(

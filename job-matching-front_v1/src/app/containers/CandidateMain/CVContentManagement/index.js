@@ -6,9 +6,8 @@ import {
 import {
   List, ListItem, Chip, FloatingActionButton
 } from 'material-ui';
-import { connect } from 'react-redux';
 
-import ParentNote from '../../components/ParentNote';
+import ParentNote from '../../../components/ParentNote';
 
 class CVContentManagement extends React.Component {
 
@@ -30,7 +29,13 @@ class CVContentManagement extends React.Component {
                       return (
                         <div key={i}>
                           <ListItem disabled >
-                            <ParentNote ordinal={i} parentNote={parentNote} />
+                            <ParentNote
+                              ordinal={i}
+                              parentNote={parentNote}
+                              handleDeleteParentNote={this.props.handleDeleteParentNote}
+                              handleHideShowSnackbar={this.props.handleHideShowSnackbar}
+                              handleChangeMessage={this.props.handleChangeMessage}
+                            />
                           </ListItem>
                         </div>
                       );

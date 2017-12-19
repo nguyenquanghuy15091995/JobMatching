@@ -1,14 +1,14 @@
 import React from 'react';
 import { MuiThemeProvider } from 'material-ui';
 import LoginForm from './containers/LoginForm';
-import CandidateLayout from './containers/CandidateLayout';
+import CandidateMain from './containers/CandidateMain';
 
 const App = () => {
   return (
     <div>
       <MuiThemeProvider>
         <div>
-          <CandidateLayout />
+          <CandidateMain />
         </div>
       </MuiThemeProvider>
     </div>

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Drawer, MenuItem } from 'material-ui';
+import { Drawer, MenuItem, Snackbar } from 'material-ui';
 import { Container, Row, Col } from 'reactstrap';
 import SwipeableViews from 'react-swipeable-views';
 import { connect } from 'react-redux';
@@ -7,8 +7,9 @@ import { connect } from 'react-redux';
 import Header from '../../components/Header';
 import ToolbarCandidate from '../../components/ToolbarCandidate';
 import ShowCVContent from '../ShowCVContent';
-import CVContentManagement from '../CVContentManagement';
-import ParentNoteAddForm from '../ParentNoteAddForm';
+import CVContentManagement from './CVContentManagement';
+import ParentNoteAddForm from './ParentNoteAddForm';
+import { deleteParentNoteAction } from '../../action';
 
 const styles = {
   headerSpace: {
@@ -31,7 +32,13 @@ const mapStateToProp = (state) => {
   };
 }
 
-class CandidateLayout extends React.Component {
+const mapDispatchToProps = (dispatch) => {
+  return {
+    deleteParentNote: (index) => dispatch(deleteParentNoteAction(index)),
+  };
+}
+
+class CandidateMain extends React.Component {
 
   constructor(props) {
     super(props);
@@ -39,6 +46,8 @@ class CandidateLayout extends React.Component {
       isOpenDrawer: false,
       slideIndex: 0,
       isAddFormOpen: false,
+      message: '',
+      isOpenSnackbar: false,
     };
   }
 
@@ -59,6 +68,12 @@ class CandidateLayout extends React.Component {
   handleCloseDrawer = () => this.setState({ isOpenDrawer: false });
 
   handleRequestChange = (isOpenDrawer) => this.setState({ isOpenDrawer });
+
+  handleHideShowSnackbar = () => this.setState({ isOpenSnackbar: !this.state.isOpenSnackbar });
+
+  handleCloseSnackbar = () => this.setState({ isOpenSnackbar: false });
+
+  handleChangeMessage = (newMessage) => this.setState({ message: newMessage });
 
   render() {
     return (
@@ -92,7 +107,12 @@ class CandidateLayout extends React.Component {
           onChangeIndex={this.handleSwipeableChange}
         >
           <div>
-            <CVContentManagement userInfo={this.props.userInfo} />
+            <CVContentManagement
+              userInfo={this.props.userInfo}
+              handleDeleteParentNote={this.props.deleteParentNote}
+              handleHideShowSnackbar={this.handleHideShowSnackbar}
+              handleChangeMessage={this.handleChangeMessage}
+            />
           </div>
           <div>
             <ShowCVContent />
@@ -102,6 +122,15 @@ class CandidateLayout extends React.Component {
         <ParentNoteAddForm
           isAddFormOpen={this.state.isAddFormOpen}
           handleHideShowAddForm={this.handleHideShowAddForm}
+          handleHideShowSnackbar={this.handleHideShowSnackbar}
+          handleChangeMessage={this.handleChangeMessage}
+        />
+
+        <Snackbar
+          open={this.state.isOpenSnackbar}
+          message={this.state.message}
+          autoHideDuration={4000}
+          onRequestClose={this.handleCloseSnackbar}
         />
 
       </div >
@@ -109,4 +138,4 @@ class CandidateLayout extends React.Component {
   }
 }
 
-export default connect(mapStateToProp)(CandidateLayout);
+export default connect(mapStateToProp, mapDispatchToProps)(CandidateMain);
