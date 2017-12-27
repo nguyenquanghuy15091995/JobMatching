@@ -6,10 +6,10 @@ import { connect } from 'react-redux';
 
 import Header from '../../components/Header';
 import ToolbarCandidate from '../../components/ToolbarCandidate';
-import ShowCVContent from '../ShowCVContent';
 import CVContentManagement from './CVContentManagement';
 import ParentNoteAddForm from './ParentNoteAddForm';
-import { deleteParentNoteAction } from '../../action';
+import ParentNoteEditForm from './ParentNoteEditForm';
+import { deleteParentNoteAction, editParentNoteAction } from '../../action';
 
 const styles = {
   headerSpace: {
@@ -24,6 +24,15 @@ const styles = {
   titleStyle: {
     fontWeight: 'bold',
   },
+  snackContentStyle: {
+    fontWeight: 'bold',
+    fontSize: 20,
+    textAlign: 'center',
+  },
+  snackStyle: {
+    width: '100%',
+    height: 50,
+  }
 };
 
 const mapStateToProp = (state) => {
@@ -48,8 +57,12 @@ class CandidateMain extends React.Component {
       isAddFormOpen: false,
       message: '',
       isOpenSnackbar: false,
+      isEditFormOpen: false,
+      parentNoteWillEditIndex: 0,
     };
   }
+
+  handleHideShowEditForm = () => this.setState({ isEditFormOpen: !this.state.isEditFormOpen });
 
   handleHideShowAddForm = () => this.setState({ isAddFormOpen: !this.state.isAddFormOpen });
 
@@ -75,6 +88,13 @@ class CandidateMain extends React.Component {
 
   handleChangeMessage = (newMessage) => this.setState({ message: newMessage });
 
+  setIndexParentNoteWillEdit = (index) => this.setState({ parentNoteWillEditIndex: index });
+
+  getIndexParentNoteWillEdit = () => ({
+    ordinal: this.state.parentNoteWillEditIndex,
+    parentNote: this.props.userInfo.person.parentNotes[this.state.parentNoteWillEditIndex],
+  })
+
   render() {
     return (
       <div>
@@ -95,7 +115,6 @@ class CandidateMain extends React.Component {
           open={this.state.isOpenDrawer}
           onRequestChange={this.handleRequestChange}
         >
-
           <MenuItem>Candidate Details</MenuItem>
           <MenuItem>Show Details as CV</MenuItem>
           <MenuItem>Setting</MenuItem>
@@ -112,10 +131,12 @@ class CandidateMain extends React.Component {
               handleDeleteParentNote={this.props.deleteParentNote}
               handleHideShowSnackbar={this.handleHideShowSnackbar}
               handleChangeMessage={this.handleChangeMessage}
+              handleHideShowEditForm={this.handleHideShowEditForm}
+              setIndexParentNoteWillEdit={this.setIndexParentNoteWillEdit}
             />
           </div>
           <div>
-            <ShowCVContent />
+            {/*Show CV as pdf*/}
           </div>
         </SwipeableViews>
 
@@ -126,11 +147,21 @@ class CandidateMain extends React.Component {
           handleChangeMessage={this.handleChangeMessage}
         />
 
+        <ParentNoteEditForm
+          parentData={this.getIndexParentNoteWillEdit}
+          isEditFormOpen={this.state.isEditFormOpen}
+          handleHideShowEditForm={this.handleHideShowEditForm}
+          handleHideShowSnackbar={this.handleHideShowSnackbar}
+          handleChangeMessage={this.handleChangeMessage}
+        />
+
         <Snackbar
           open={this.state.isOpenSnackbar}
           message={this.state.message}
           autoHideDuration={4000}
           onRequestClose={this.handleCloseSnackbar}
+          contentStyle={styles.snackContentStyle}
+          style={styles.snackStyle}
         />
 
       </div >

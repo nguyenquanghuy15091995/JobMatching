@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "axios": "^0.17.1",
     "bootstrap": "4.0.0-beta.2",
     "material-ui": "^0.19.4",
     "material-ui-fullscreen-dialog": "^0.7.1",

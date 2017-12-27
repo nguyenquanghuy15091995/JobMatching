@@ -7,10 +7,6 @@ const captionStyle = {
 }
 
 class CaptionText extends React.Component {
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div>

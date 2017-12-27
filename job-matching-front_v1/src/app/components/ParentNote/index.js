@@ -1,9 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Card, CardActions, CardHeader, CardTitle, CardText, TextField, Divider, RaisedButton } from 'material-ui';
+import axios from 'axios';
 
 import NonTimeChildNote from '../NonTimeChildNote';
 import TimeChildNote from '../TimeChildNote';
+import { accountPutByIdRouter } from '../../../common/accountAPI';
 
 import EditIcon from 'material-ui/svg-icons/image/edit';
 import DeleteIcon from 'material-ui/svg-icons/action/delete';
@@ -44,9 +46,26 @@ class ParentNote extends React.Component {
 
   reHandleDeleteParentNote = () => {
     this.props.handleDeleteParentNote(this.props.ordinal);
-    this.props.handleChangeMessage(this.props.parentNote.title.toUpperCase() + ' was deleted!');
-    this.props.handleHideShowSnackbar();
-    console.log('ahihi')
+    const curUserInfo = this.props.userInfo;
+    const newUserInfo = {
+      "username" : curUserInfo.username,
+      "password" : curUserInfo.password,
+      "role": curUserInfo.role,
+      "person": curUserInfo.person
+    };
+    axios.put(accountPutByIdRouter(this.props.userInfo._id), newUserInfo).then(
+      (response) => {
+        this.props.handleChangeMessage(this.props.parentNote.title.toUpperCase() + ' was deleted!');
+        this.props.handleHideShowSnackbar();
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  }
+
+  handleEditButtonClicked = () => {
+    this.props.setIndexParentNoteWillEdit(this.props.ordinal);
+    this.props.handleHideShowEditForm();
   }
 
   render() {
@@ -86,6 +105,7 @@ class ParentNote extends React.Component {
               labelStyle={styles.editButtonLabel}
               icon={<EditIcon color="#FFFFFF" />}
               buttonStyle={styles.editButtonStyle}
+              onClick={this.handleEditButtonClicked}
             />
             <RaisedButton
               id={"delete_" + this.props.ordinal}

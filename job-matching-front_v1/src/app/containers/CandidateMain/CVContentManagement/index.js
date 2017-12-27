@@ -32,9 +32,12 @@ class CVContentManagement extends React.Component {
                             <ParentNote
                               ordinal={i}
                               parentNote={parentNote}
+                              userInfo={this.props.userInfo}
                               handleDeleteParentNote={this.props.handleDeleteParentNote}
                               handleHideShowSnackbar={this.props.handleHideShowSnackbar}
                               handleChangeMessage={this.props.handleChangeMessage}
+                              handleHideShowEditForm={this.props.handleHideShowEditForm}
+                              setIndexParentNoteWillEdit={this.props.setIndexParentNoteWillEdit}
                             />
                           </ListItem>
                         </div>

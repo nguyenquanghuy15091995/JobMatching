@@ -6,20 +6,15 @@ import {
   Dialog,
   TextField,
   Card, CardText, CardTitle, CardActions,
-  RaisedButton, IconButton, FlatButton,
-  Table, TableBody, TableRow, TableRowColumn,
+  RaisedButton, FlatButton,
   Checkbox,
 } from 'material-ui';
 import axios from 'axios';
 
-import { addNewParentNoteAction } from '../../../action';
+import { editParentNoteAction } from '../../../action';
+import ChildNoteEditForm from './ChildNoteEditForm';
 import { accountPutByIdRouter } from '../../../../common/accountAPI';
 
-import ChildNoteAddForm from './ChildNoteAddForm';
-
-import CloseIcon from 'material-ui/svg-icons/navigation/close';
-import RemoveIcon from 'material-ui/svg-icons/content/remove-circle';
-import AcceptIcon from 'material-ui/svg-icons/action/check-circle';
 import AddIcon from 'material-ui/svg-icons/av/playlist-add';
 import ClockOffIcon from 'material-ui/svg-icons/action/alarm-off';
 import ClockOnIcon from 'material-ui/svg-icons/action/alarm-on';
@@ -66,7 +61,7 @@ const styles = {
     fontSize: 20,
     fontWeight: 'bold',
   },
-  textInputTextCaption: {
+  textInputTextCation: {
     fontSize: 20,
     fontWeight: 'bold',
   },
@@ -83,36 +78,37 @@ const styles = {
 };
 
 const mapStateToProps = (state) => {
-  return {
-    user: state.user,
-  };
+  return ({
+    userInfo: state.user,
+  });
 }
 
 const mapDispatchToProps = (dispatch) => {
-  return {
-    saveContentAdd: (newParentNote) => dispatch(addNewParentNoteAction(newParentNote)),
-  };
+  return ({
+    editParentNote: (index, newParentNote) => dispatch(editParentNoteAction(index, newParentNote)),
+  });
 }
 
-class ParentNoteAddForm extends React.Component {
-
+class ParentNoteEditForm extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       isTime: false,
       isError: true,
-      parentTitleCation: 'Example Caption',
+      parentTitleCation: '',
       childNotes: [],
       isOpenAsk: false,
     };
   }
 
-  resetState = () => {
+  componentWillReceiveProps = () => {
+    const parentNote = this.props.parentData().parentNote;
     this.setState({
-      isTime: false,
-      isError: false,
-      parentTitleCation: 'Example Caption',
-      childNotes: [],
+      isTime: (parentNote.parentType === 'time') ? true : false,
+      isError: true,
+      parentTitleCation: parentNote.title,
+      childNotes: parentNote.childNotes,
+      isOpenAsk: false,
     });
   }
 
@@ -122,25 +118,32 @@ class ParentNoteAddForm extends React.Component {
       parentType: this.state.isTime ? 'time' : 'non-time',
       childNotes: this.state.childNotes,
     };
-    this.props.saveContentAdd(newParentNote);
-    const curUserInfo = this.props.user;
+    this.props.editParentNote(this.props.parentData().ordinal, newParentNote);
+    const curUserInfo = this.props.userInfo;
     const newUserInfo = {
       "username" : curUserInfo.username,
       "password" : curUserInfo.password,
       "role": curUserInfo.role,
       "person": curUserInfo.person
     }
-    axios.put(accountPutByIdRouter(this.props.user._id), newUserInfo).then(
+    axios.put(accountPutByIdRouter(this.props.userInfo._id), newUserInfo).then(
       (response) => {
-        this.props.handleChangeMessage(this.state.parentTitleCation + ' was added!');
-        this.props.handleHideShowAddForm();
+        this.props.handleChangeMessage(this.state.parentTitleCation + ' was edited!');
         this.props.handleHideShowSnackbar();
-        this.resetState();
       })
       .catch(function (error) {
         console.log(error);
       });
 
+  }
+
+  resetState = () => {
+    this.setState({
+      isTime: false,
+      isError: false,
+      parentTitleCation: 'Example Caption',
+      childNotes: [],
+    });
   }
 
   handleCheckboxTimeStatus = () => {
@@ -275,7 +278,6 @@ class ParentNoteAddForm extends React.Component {
   reHandleHideShowAddForm = () => {
     this.props.handleHideShowAddForm();
     this.handleHideShowAskDialog();
-    this.resetState();
   }
 
   render() {
@@ -289,17 +291,16 @@ class ParentNoteAddForm extends React.Component {
       />,
       <FlatButton
         label="Close"
-        onClick={this.reHandleHideShowAddForm}
+        onClick={this.props.handleHideShowEditForm}
         labelStyle={styles.askButtonLabel}
       />,
     ];
-
     return (
       <div>
         <FullscreenDialog
-          open={this.props.isAddFormOpen}
+          open={this.props.isEditFormOpen}
           onRequestClose={this.handleHideShowAskDialog}
-          title="Add New Details Form"
+          title="Edit Details Form"
           appBarStyle={{ backgroundColor: '#00897B' }}
           style={{ backgroundColor: '#EEEEEE' }}
           actionButton={
@@ -320,7 +321,7 @@ class ParentNoteAddForm extends React.Component {
                 title={
                   <TextField
                     style={styles.parentTitle}
-                    inputStyle={styles.textInputTextCaption}
+                    inputStyle={styles.textInputTextCation}
                     floatingLabelText="CAPTION"
                     floatingLabelFocusStyle={styles.textFloatLabelFocus}
                     floatingLabelStyle={styles.textFloatLabel}
@@ -345,12 +346,12 @@ class ParentNoteAddForm extends React.Component {
               <CardText>
                 {
                   this.state.childNotes.map(
-                    (child, i) => {
+                    (childNote, i) => {
                       return (
                         <div key={i}>
-                          <ChildNoteAddForm
+                          <ChildNoteEditForm
                             ordinal={i}
-                            childNote={child}
+                            childNote={childNote}
                             isTimeNote={this.state.isTime}
                             handleRemove={this.handleRemove}
                             handleInputChangeContent={this.handleInputChangeContent}
@@ -363,7 +364,6 @@ class ParentNoteAddForm extends React.Component {
                     }
                   )
                 }
-
               </CardText>
               <CardActions style={styles.cardActionStyle} >
                 <RaisedButton
@@ -380,7 +380,7 @@ class ParentNoteAddForm extends React.Component {
           </form>
         </FullscreenDialog>
         <Dialog
-          title="Do you want to close ADD form?"
+          title="Do you want to close EDIT form?"
           modal={true}
           open={this.state.isOpenAsk}
           actions={closeButtonActions}
@@ -390,9 +390,4 @@ class ParentNoteAddForm extends React.Component {
   }
 }
 
-ParentNoteAddForm.propTypes = {
-  isAddFormOpen: PropTypes.bool,
-  handleHideShowAddForm: PropTypes.func,
-};
-
-export default connect(mapStateToProps, mapDispatchToProps)(ParentNoteAddForm);
+export default connect(mapStateToProps, mapDispatchToProps)(ParentNoteEditForm);

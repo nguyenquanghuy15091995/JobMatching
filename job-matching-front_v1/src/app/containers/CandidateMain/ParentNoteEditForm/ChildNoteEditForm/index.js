@@ -36,7 +36,7 @@ const styles = {
   },
 };
 
-class ChildNoteAddForm extends React.Component {
+class ChildNoteEditForm extends React.Component {
   constructor(props) {
     super(props);
   }
@@ -98,7 +98,6 @@ class ChildNoteAddForm extends React.Component {
   }
 
   render() {
-
     let timeFields = <div />;
     if (this.props.isTimeNote) {
       timeFields = <div>
@@ -170,4 +169,4 @@ class ChildNoteAddForm extends React.Component {
   }
 }
 
-export default ChildNoteAddForm;
+export default ChildNoteEditForm;

@@ -14,11 +14,6 @@ const iconStyle = {
 }
 
 class TimeText extends React.Component {
-
-  constructor(props) {
-    super(props);
-  }
-
   render() {
     return (
       <div>
