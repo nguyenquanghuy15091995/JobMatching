@@ -14,6 +14,7 @@ import CandidateMain from './containers/CandidateMain';
 import RecruiterMain from './containers/RecruiterMain';
 
 import { CANDIDATE_SITE, LOGIN_SITE, RECRUITER_SITE } from '../common/link';
+import recordVoiceOver from 'material-ui/svg-icons/action/record-voice-over';
 
 const styles = {
   icontCheckboxStyle: {
@@ -94,7 +95,7 @@ class App extends React.Component {
       </Link>
     }
 
-    let redirect = <Redirect to={LOGIN_SITE} />;
+    let redirect = <Redirect to={RECRUITER_SITE} />;
     if (this.state.redirectLink === CANDIDATE_SITE) {
       redirect = <Redirect to={CANDIDATE_SITE} />;
     } else if (this.state.redirectLink === RECRUITER_SITE) {
