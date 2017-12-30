@@ -19,8 +19,10 @@ const port = 8080;
 mongoose.Promise = global.Promise;
 mongoose.connect(`mongodb://localhost:27017/${dataConfig.DATABASE_NAME}`);
 const AccountRouter = require('./src/routers/accountRouter');
+const AutocompleteRouter = require('./src/routers/autocompleteRouter');
 
 AccountRouter(router);
+AutocompleteRouter(router);
 
 // const Student = mongoose.model('stu_details', studentSchema);
 

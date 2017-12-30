@@ -6,7 +6,6 @@ const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 const AccountRouter = (router) => {
   router.get('/accounts', (req, res, next) => {
     AccountInfo.find().exec((err, accounts) => {
-      console.log(accounts);
       res.status(200).json({
         accounts,
       });
