@@ -1,0 +1,1 @@
+export const autocompleteGetListRouter = () => `http://localhost:8080/api/autocompletes`;

@@ -302,16 +302,7 @@ class ParentNoteAddForm extends React.Component {
           title="Add New Details Form"
           appBarStyle={{ backgroundColor: '#00897B' }}
           style={{ backgroundColor: '#EEEEEE' }}
-          actionButton={
-            <FlatButton
-              label="Save"
-              labelStyle={
-                this.state.isError ? styles.saveButtonDisableLabel : styles.saveButtonLabel
-              }
-              disabled={this.state.isError}
-              onClick={this.handleSaveNewParentNote}
-            />
-          }
+          
         >
           <form>
             <Card>
