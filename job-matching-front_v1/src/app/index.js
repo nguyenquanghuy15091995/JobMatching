@@ -95,7 +95,7 @@ class App extends React.Component {
       </Link>
     }
 
-    let redirect = <Redirect to={RECRUITER_SITE} />;
+    let redirect = <Redirect to={LOGIN_SITE} />;
     if (this.state.redirectLink === CANDIDATE_SITE) {
       redirect = <Redirect to={CANDIDATE_SITE} />;
     } else if (this.state.redirectLink === RECRUITER_SITE) {
@@ -117,7 +117,14 @@ class App extends React.Component {
                       />
                     }
                   />
-                  <Route path={CANDIDATE_SITE} component={CandidateMain} />
+                  <Route
+                    path={CANDIDATE_SITE}
+                    component={
+                      () => <CandidateMain
+                        handleChangeRedirect={this.handleChangeRedirect}
+                      />
+                    }
+                  />
                   <Route path={RECRUITER_SITE} component={RecruiterMain} />
                   {redirect}
                 </Switch>

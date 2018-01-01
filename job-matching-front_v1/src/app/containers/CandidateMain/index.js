@@ -1,15 +1,24 @@
 import React from 'react';
-import { Drawer, MenuItem, Snackbar } from 'material-ui';
+import { Drawer, MenuItem, ListItem, Snackbar, Avatar, Divider } from 'material-ui';
 import { Container, Row, Col } from 'reactstrap';
 import SwipeableViews from 'react-swipeable-views';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 
 import Header from '../../components/Header';
+import PdfCV from '../../components/PdfCV';
 import ToolbarCandidate from '../../components/ToolbarCandidate';
 import CVContentManagement from './CVContentManagement';
 import ParentNoteAddForm from './ParentNoteAddForm';
 import ParentNoteEditForm from './ParentNoteEditForm';
 import { deleteParentNoteAction, editParentNoteAction } from '../../action';
+import { logoutAction } from '../LoginForm/action';
+import { LOGIN_SITE } from '../../../common/link';
+
+import UserIcon from 'material-ui/svg-icons/action/account-circle';
+import LogoutIcon from 'material-ui/svg-icons/action/account-balance-wallet';
+
+import BackgroundUserProfile from '../../images/backgrounduserprofile.jpg';
 
 const styles = {
   headerSpace: {
@@ -44,8 +53,11 @@ const mapStateToProp = (state) => {
 const mapDispatchToProps = (dispatch) => {
   return {
     deleteParentNote: (index) => dispatch(deleteParentNoteAction(index)),
+    doLogout: () => dispatch(logoutAction()),
   };
 }
+
+const sleep = ms => new Promise(resolve => setTimeout(resolve, ms));
 
 class CandidateMain extends React.Component {
 
@@ -53,12 +65,12 @@ class CandidateMain extends React.Component {
     super(props);
     this.state = {
       isOpenDrawer: false,
-      slideIndex: 0,
       isAddFormOpen: false,
       message: '',
       isOpenSnackbar: false,
       isEditFormOpen: false,
       parentNoteWillEditIndex: 0,
+      isPdfFormOpen: false,
     };
   }
 
@@ -69,12 +81,6 @@ class CandidateMain extends React.Component {
   handleDownloadClick = () => {
     console.log('Ahihi');
   }
-
-  handleEditDetailsClick = () => this.setState({ slideIndex: 0 });
-
-  handlePreviewPDFClick = () => this.setState({ slideIndex: 1 });
-
-  handleSwipeableChange = (value) => this.setState({ slideIndex: value });
 
   handleToggleDrawer = () => this.setState({ isOpenDrawer: !this.state.isOpenDrawer });
 
@@ -88,12 +94,27 @@ class CandidateMain extends React.Component {
 
   handleChangeMessage = (newMessage) => this.setState({ message: newMessage });
 
+  handleHideShowPdfForm = () => {
+    this.setState({
+      isPdfFormOpen: !this.state.isPdfFormOpen,
+    })
+  }
+
   setIndexParentNoteWillEdit = (index) => this.setState({ parentNoteWillEditIndex: index });
 
   getIndexParentNoteWillEdit = () => ({
     ordinal: this.state.parentNoteWillEditIndex,
     parentNote: this.props.userInfo.person.parentNotes[this.state.parentNoteWillEditIndex],
   })
+
+  handleLogoutClick = () => {
+    this.props.doLogout();
+    sleep(1000).then(
+      () => {
+        this.props.handleChangeRedirect(LOGIN_SITE);
+      }
+    );
+  }
 
   render() {
     return (
@@ -103,7 +124,7 @@ class CandidateMain extends React.Component {
           <ToolbarCandidate
             handleMenuClick={this.handleToggleDrawer}
             handleEditDetailsClick={this.handleEditDetailsClick}
-            handlePreviewPDFClick={this.handlePreviewPDFClick}
+            handlePreviewPDFClick={this.handleHideShowPdfForm}
             handleDownloadClick={this.handleDownloadClick}
             handleAddNewInfoClick={this.handleHideShowAddForm}
           />
@@ -115,30 +136,39 @@ class CandidateMain extends React.Component {
           open={this.state.isOpenDrawer}
           onRequestChange={this.handleRequestChange}
         >
-          <MenuItem>Candidate Details</MenuItem>
-          <MenuItem>Show Details as CV</MenuItem>
-          <MenuItem>Setting</MenuItem>
-          <MenuItem>Logout</MenuItem>
+          <div style={{ width: '100%', height: 220 }}>
+            <img style={{ height: '100%', width: '100%' }} src={BackgroundUserProfile} alt="background" />
+          </div>
+          <ListItem
+            leftAvatar={<Avatar icon={<UserIcon />} color="#E0F2F1" />}
+          >
+            Hi, <strong>{this.props.userInfo.person.name}</strong>!
+          </ListItem>
+          <Divider />
+          <Link to={LOGIN_SITE}>
+            <ListItem
+              leftAvatar={<Avatar icon={<LogoutIcon />} color="#E0F2F1" />}
+              onClick={this.handleLogoutClick}
+            >
+              Logout
+            </ListItem>
+          </Link>
         </Drawer>
 
-        <SwipeableViews
-          index={this.state.slideIndex}
-          onChangeIndex={this.handleSwipeableChange}
-        >
-          <div>
-            <CVContentManagement
-              userInfo={this.props.userInfo}
-              handleDeleteParentNote={this.props.deleteParentNote}
-              handleHideShowSnackbar={this.handleHideShowSnackbar}
-              handleChangeMessage={this.handleChangeMessage}
-              handleHideShowEditForm={this.handleHideShowEditForm}
-              setIndexParentNoteWillEdit={this.setIndexParentNoteWillEdit}
-            />
-          </div>
-          <div>
-            {/*Show CV as pdf*/}
-          </div>
-        </SwipeableViews>
+        <CVContentManagement
+          userInfo={this.props.userInfo}
+          handleDeleteParentNote={this.props.deleteParentNote}
+          handleHideShowSnackbar={this.handleHideShowSnackbar}
+          handleChangeMessage={this.handleChangeMessage}
+          handleHideShowEditForm={this.handleHideShowEditForm}
+          setIndexParentNoteWillEdit={this.setIndexParentNoteWillEdit}
+        />
+
+        <PdfCV
+          account={this.props.userInfo}
+          isPdfFormOpen={this.state.isPdfFormOpen}
+          handleHideShowPdfForm={this.handleHideShowPdfForm}
+        />
 
         <ParentNoteAddForm
           isAddFormOpen={this.state.isAddFormOpen}

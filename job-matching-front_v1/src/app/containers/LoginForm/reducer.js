@@ -1,10 +1,12 @@
-import { UPDATE_LOGIN_STATUS } from './constants';
+import { UPDATE_LOGIN_STATUS, UPDATE_LOGOUT_STATUS } from './constants';
 
 export const loginReducer = (state = false, action) => {
-  switch(action.type){
+  switch (action.type) {
     case UPDATE_LOGIN_STATUS:
-    return true;
+      return true;
+    case UPDATE_LOGOUT_STATUS:
+      return false;
     default:
-    return state;
+      return state;
   }
 }

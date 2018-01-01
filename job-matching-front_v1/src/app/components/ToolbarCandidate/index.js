@@ -80,6 +80,11 @@ class ToolbarCandidate extends React.Component {
     this.handleRequestCloseFeatures();
   }
 
+  reHandlePreviewPdfClick = () => {
+    this.handleRequestCloseFeatures();
+    this.props.handlePreviewPDFClick();
+  }
+
   render() {
     return (
       <div>
@@ -116,14 +121,9 @@ class ToolbarCandidate extends React.Component {
               <Menu>
                 <Divider />
                 <MenuItem
-                  primaryText="Manage CV Details"
-                  leftIcon={<AssignmentIcon color="#00897B" />}
-                  onClick={this.props.handleEditDetailsClick}
-                />
-                <MenuItem
                   primaryText="Preview as PDF"
                   leftIcon={<RemoveRedEyeIcon color="#00897B" />}
-                  onClick={this.props.handlePreviewPDFClick}
+                  onClick={this.reHandlePreviewPdfClick}
                 />
                 <MenuItem
                   primaryText="Add new Info"
@@ -131,11 +131,6 @@ class ToolbarCandidate extends React.Component {
                   onClick={this.reHandleAddNewInfoClick}
                 />
                 <Divider />
-                <MenuItem
-                  primaryText="Download"
-                  leftIcon={<DownloadIcon color="#00897B" />}
-                  onClick={this.props.handleDownloadClick}
-                />
               </Menu>
             </Popover>
 
