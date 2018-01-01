@@ -20,9 +20,11 @@ mongoose.Promise = global.Promise;
 mongoose.connect(`mongodb://localhost:27017/${dataConfig.DATABASE_NAME}`);
 const AccountRouter = require('./src/routers/accountRouter');
 const AutocompleteRouter = require('./src/routers/autocompleteRouter');
+const PostRouter = require('./src/routers/postRouter');
 
 AccountRouter(router);
 AutocompleteRouter(router);
+PostRouter(router);
 
 // const Student = mongoose.model('stu_details', studentSchema);
 

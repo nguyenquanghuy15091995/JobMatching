@@ -1,0 +1,5 @@
+module.exports = {
+  CANDIDATE: 'CANDIDATE',
+  RECRUITER: 'RECRUITER',
+  MANAGER: 'MANAGER',
+};

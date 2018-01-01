@@ -1,5 +1,6 @@
 const AccountInfo = require('../models/account');
 const unique = require('array-unique');
+const accountConstant = require('../constants/accountConstant');
 
 const sleep = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
 
@@ -43,9 +44,11 @@ const AccountRouter = (router) => {
     //convert string to regular expression.
     queriesTemp.map(
       (queryTemp, i) => {
-        queries.push(new RegExp(`.*${queryTemp}.*`));
+
+        queries.push(new RegExp(`.*${queryTemp}.*`, 'i'));
       }
     );
+
     //search in child note's title.
     AccountInfo.find({
       'person.parentNotes.childNotes.title': { $in: queries }
@@ -99,7 +102,9 @@ const AccountRouter = (router) => {
           } else {
             accounts.map(
               (account, i) => {
-                finalResults.push(account);
+                if (account.role === accountConstant.CANDIDATE) {
+                  finalResults.push(account);
+                }
               }
             );
           }
