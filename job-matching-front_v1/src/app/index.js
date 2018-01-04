@@ -8,6 +8,7 @@ import {
   Link,
 } from 'react-router-dom';
 import { Row, Col } from 'reactstrap';
+import { connect } from 'react-redux';
 
 import LoginForm from './containers/LoginForm';
 import CandidateMain from './containers/CandidateMain';
@@ -50,57 +51,26 @@ const styles = {
   },
 }
 
+const PrivateRoute = ({ component: Component, loggedIn, ...rest }) => (
+  <Route {...rest} render={props => (
+    loggedIn ? (
+      <Component {...props} />
+    ) : (
+        <Redirect to={{
+          pathname: LOGIN_SITE,
+          state: { from: props.location }
+        }} />
+      )
+  )} />
+)
+
 class App extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      redirectLink: LOGIN_SITE,
-      isOpenAskDialog: false,
-      isCheckedHuman: false,
-    };
-  }
-
-  handleChangeRedirect = (link) => {
-    this.setState({
-      redirectLink: link,
-    });
-  }
-
-  handleShowHideAskDialog = () => {
-    this.setState({
-      isOpenAskDialog: !this.state.isOpenAskDialog,
-    });
-  }
-
-  handleToggleCheckbox = () => {
-    this.setState({
-      isCheckedHuman: true,
-    });
   }
 
   render() {
-
-    let goHomePageAction = <div />
-    if (this.state.isCheckedHuman) {
-      goHomePageAction = <Link to="/" style={styles.goHomeLink}>
-        <RaisedButton
-          fullWidth
-          style={styles.goHomeButtonContainer}
-          buttonStyle={styles.goHomeButtonStyle}
-          labelStyle={styles.goHomeButtonLabel}
-          label="Go to HomePage"
-          labelPosition="before"
-          onClick={this.handleShowHideAskDialog}
-        />
-      </Link>
-    }
-
-    let redirect = <Redirect to={LOGIN_SITE} />;
-    if (this.state.redirectLink === CANDIDATE_SITE) {
-      redirect = <Redirect to={CANDIDATE_SITE} />;
-    } else if (this.state.redirectLink === RECRUITER_SITE) {
-      redirect = <Redirect to={RECRUITER_SITE} />;
-    }
+    const { isLoggedIn } = this.props;
     return (
       <div>
         <MuiThemeProvider>
@@ -110,50 +80,24 @@ class App extends React.Component {
                 <Switch>
                   <Route
                     path={LOGIN_SITE}
-                    component={
-                      () => <LoginForm
-                        handleChangeRedirect={this.handleChangeRedirect}
-                        handleShowHideAskDialog={this.handleShowHideAskDialog}
-                      />
-                    }
+                    component={LoginForm}
                   />
-                  <Route
-                    path={CANDIDATE_SITE}
-                    component={
-                      () => <CandidateMain
-                        handleChangeRedirect={this.handleChangeRedirect}
-                      />
-                    }
-                  />
-                  <Route path={RECRUITER_SITE} component={RecruiterMain} />
-                  {redirect}
-                </Switch>
-                <Dialog
-                  modal={true}
-                  open={this.state.isOpenAskDialog}
-                >
-                  <Row>
-                    <Col md={5} />
-                    <Col md={2} >
-                      <Checkbox
-                        iconStyle={styles.icontCheckboxStyle}
-                        inputStyle={styles.checkboxInputStyle}
-                        checked={this.state.isCheckedHuman}
-                        onCheck={this.handleToggleCheckbox}
-                      />
-                    </Col>
-                    <Col md={5} />
-                  </Row>
-                  <Row>
-                    <div style={styles.confirmLabelStyle}>
-                      I'm not a robot
-                    </div>
-                  </Row>
-                  <Row>
-                    {goHomePageAction}
-                  </Row>
 
-                </Dialog>
+                  <PrivateRoute
+                    path={RECRUITER_SITE}
+                    loggedIn={isLoggedIn}
+                    component={RecruiterMain}
+                  />
+
+                  <PrivateRoute
+                    path={CANDIDATE_SITE}
+                    loggedIn={isLoggedIn}
+                    component={CandidateMain}
+                  />
+
+                  <Redirect from="/" to={LOGIN_SITE} />
+
+                </Switch>
               </div>
             </Router>
           </div>
@@ -163,4 +107,10 @@ class App extends React.Component {
   }
 }
 
-export default App;
+const mapStateToProps = (state) => {
+  return {
+    isLoggedIn: state.isLoggedIn,
+  };
+}
+
+export default connect(mapStateToProps)(App);

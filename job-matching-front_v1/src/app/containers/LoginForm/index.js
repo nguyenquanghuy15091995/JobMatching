@@ -6,11 +6,13 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { SubmissionError } from 'redux-form';
 import axios from 'axios';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 import { loginAction } from './action';
 import { loadUserDatabaseAction } from '../../action';
 import { CANDIDATE_SITE, RECRUITER_SITE } from '../../../common/link';
 import { accountGetByIdRouter } from '../../../common/accountAPI';
+import history from 'material-ui/svg-icons/action/history';
 
 const styles = {
 
@@ -113,16 +115,6 @@ const mapDispatchToProps = (dispatch) => {
 class LoginForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      isOpenAskDialog: false,
-      isCheckedHuman: false,
-    };
-  }
-
-  handleShowHideAskDialog = () => {
-    this.setState({
-      isOpenAskDialog: !this.state.isOpenAskDialog,
-    });
   }
 
   submit = (values) => {
@@ -148,13 +140,13 @@ class LoginForm extends React.Component {
         } else {
 
           this.props.doLogin();
+
           this.props.loadDataToUserState(account);
           if (account.role === 'CANDIDATE') {
-            this.props.handleChangeRedirect(CANDIDATE_SITE);
+            this.props.history.pushState(CANDIDATE_SITE);
           } else if (account.role === 'RECRUITER') {
-            this.props.handleChangeRedirect(RECRUITER_SITE);
+            this.props.history.push(RECRUITER_SITE);
           }
-          this.props.handleShowHideAskDialog();
         }
       }
     });
@@ -215,6 +207,7 @@ class LoginForm extends React.Component {
                         disabledLabelColor="#6F6F6F"
                         fullWidth={true}
                         label="Submit"
+                        type="submit"
                       />
 
                     </ListItem>
@@ -237,4 +230,4 @@ class LoginForm extends React.Component {
 export default reduxForm({
   form: 'LoginForm',
   validate
-})(connect(mapStateToProps, mapDispatchToProps)(LoginForm));
+})(connect(mapStateToProps, mapDispatchToProps)(withRouter(LoginForm)));

@@ -1,8 +1,9 @@
 import React from 'react';
 import ReactTags from 'react-tag-autocomplete';
 import { Container, Row, Col } from 'reactstrap';
-import { RaisedButton, Card, CardText } from 'material-ui';
+import { RaisedButton, Card, CardText, Drawer, ListItem, Avatar, Divider } from 'material-ui';
 import { connect } from 'react-redux';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import unique from 'array-unique';
 
@@ -12,8 +13,15 @@ import AccountCardView from './AccountCardView';
 import PdfCV from '../../components/PdfCV';
 
 import { pushAutocompleteDataToListAction, pushSearchResultsAction } from './action';
+import { logoutAction } from '../LoginForm/action';
 import { autocompleteGetListRouter } from '../../../common/autocompleteAPI';
 import { accountGetBySearchRouter } from '../../../common/accountAPI';
+import { LOGIN_SITE } from '../../../common/link';
+
+import BackgroundUserProfile from '../../images/backgrounduserprofile.jpg';
+
+import UserIcon from 'material-ui/svg-icons/action/account-circle';
+import LogoutIcon from 'material-ui/svg-icons/action/account-balance-wallet';
 
 import './style.css';
 
@@ -61,6 +69,7 @@ const mapStateToProps = (state) => {
   return {
     autocompletes: state.autocompletes,
     accountSearchResults: state.accountSearchResults,
+    userInfo: state.user,
   }
 }
 
@@ -83,6 +92,7 @@ class RecruiterMain extends React.Component {
       screenViews: [],
       isPdfFormOpen: false,
       currentIndex: 0,
+      isOpenDrawer: false,
     }
   }
 
@@ -119,6 +129,12 @@ class RecruiterMain extends React.Component {
       tags,
     });
   }
+
+  handleToggleDrawer = () => this.setState({ isOpenDrawer: !this.state.isOpenDrawer });
+
+  handleCloseDrawer = () => this.setState({ isOpenDrawer: false });
+
+  handleRequestChange = (isOpenDrawer) => this.setState({ isOpenDrawer });
 
   handleAddition = (tag) => {
     const tags = unique([].concat(this.state.tags, tag));
@@ -198,9 +214,35 @@ class RecruiterMain extends React.Component {
       <div>
         <div style={styles.headerStyle}>
           <Header title="Job Matching System" isNullElement={true} handleLeftButton={this.handleToggleDrawer} />
-          <ToolbarRecruiter />
+          <ToolbarRecruiter 
+            handleMenuClick={this.handleToggleDrawer}
+          />
         </div>
         <div style={styles.headerSpace} />
+        <Drawer
+          docked={false}
+          width={250}
+          open={this.state.isOpenDrawer}
+          onRequestChange={this.handleRequestChange}
+        >
+          <div style={{ width: '100%', height: 220 }}>
+            <img style={{ height: '100%', width: '100%' }} src={BackgroundUserProfile} alt="background" />
+          </div>
+          <ListItem
+            leftAvatar={<Avatar icon={<UserIcon />} color="#E0F2F1" />}
+          >
+            Hi, <strong>{this.props.userInfo.person.name}</strong>!
+          </ListItem>
+          <Divider />
+          <Link to={LOGIN_SITE}>
+            <ListItem
+              leftAvatar={<Avatar icon={<LogoutIcon />} color="#E0F2F1" />}
+              onClick={this.handleLogoutClick}
+            >
+              Logout
+            </ListItem>
+          </Link>
+        </Drawer>
         <Container>
           <Card>
             <CardText>
@@ -240,7 +282,7 @@ class RecruiterMain extends React.Component {
           </Card>
         </Container>
 
-        <PdfCV 
+        <PdfCV
           account={this.props.accountSearchResults[this.state.currentIndex]}
           isPdfFormOpen={this.state.isPdfFormOpen}
           handleHideShowPdfForm={this.handleHideShowPdfForm}
