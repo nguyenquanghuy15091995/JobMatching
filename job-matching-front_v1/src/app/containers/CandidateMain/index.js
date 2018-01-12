@@ -3,7 +3,7 @@ import { Drawer, MenuItem, ListItem, Snackbar, Avatar, Divider } from 'material-
 import { Container, Row, Col } from 'reactstrap';
 import SwipeableViews from 'react-swipeable-views';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 
 import Header from '../../components/Header';
 import PdfCV from '../../components/PdfCV';
@@ -111,7 +111,8 @@ class CandidateMain extends React.Component {
     this.props.doLogout();
     sleep(1000).then(
       () => {
-        this.props.handleChangeRedirect(LOGIN_SITE);
+       // this.props.handleChangeRedirect(LOGIN_SITE);
+       this.props.history.push(LOGIN_SITE)
       }
     );
   }
@@ -199,4 +200,4 @@ class CandidateMain extends React.Component {
   }
 }
 
-export default connect(mapStateToProp, mapDispatchToProps)(CandidateMain);
+export default connect(mapStateToProp, mapDispatchToProps)(withRouter(CandidateMain));

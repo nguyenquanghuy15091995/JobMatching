@@ -143,7 +143,7 @@ class LoginForm extends React.Component {
 
           this.props.loadDataToUserState(account);
           if (account.role === 'CANDIDATE') {
-            this.props.history.pushState(CANDIDATE_SITE);
+            this.props.history.push(CANDIDATE_SITE);
           } else if (account.role === 'RECRUITER') {
             this.props.history.push(RECRUITER_SITE);
           }

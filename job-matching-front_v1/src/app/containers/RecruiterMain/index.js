@@ -3,7 +3,7 @@ import ReactTags from 'react-tag-autocomplete';
 import { Container, Row, Col } from 'reactstrap';
 import { RaisedButton, Card, CardText, Drawer, ListItem, Avatar, Divider } from 'material-ui';
 import { connect } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, withRouter } from 'react-router-dom';
 import axios from 'axios';
 import unique from 'array-unique';
 
@@ -292,4 +292,4 @@ class RecruiterMain extends React.Component {
   }
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(RecruiterMain);
+export default connect(mapStateToProps, mapDispatchToProps)(withRouter(RecruiterMain));
